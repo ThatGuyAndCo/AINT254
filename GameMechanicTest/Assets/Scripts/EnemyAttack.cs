@@ -7,6 +7,8 @@ public class EnemyAttack : MonoBehaviour {
 	private TurnObject c_myTurnObject;
 	private GameObject[] c_targets;
 
+	private PlayerHealth c_playerHealthScript;
+
 	[SerializeField]
 	private int c_personalDelay;
 
@@ -26,10 +28,12 @@ public class EnemyAttack : MonoBehaviour {
 		GameObject l_target;
 		int l_randomTarget = Random.Range (0, c_targets.Length);
 		l_target = c_targets [l_randomTarget];
-		l_target.SendMessage ("TakeDamage", 20);
+		c_playerHealthScript = l_target.GetComponent<PlayerHealth> ();
+		BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, 20);
+		c_playerHealthScript.TakeDamage (l_sendDamage);
 		c_myTurnObject.c_delayValue += 30;
 		Debug.Log ("Enemy attacked");
-		Invoke("DelayCallNext", 0.5f);
+		Invoke("DelayCallNext", 1.5f);
 	}
 
 	private void DelayCallNext(){

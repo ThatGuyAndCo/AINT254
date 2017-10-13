@@ -1,8 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
+
+	[SerializeField]
+	private UIControl c_UI;
 
 	[SerializeField]
 	private int c_playerMaxHealth;
@@ -11,9 +15,13 @@ public class PlayerHealth : MonoBehaviour {
 	private int c_playerCurrentHealth;
 	private bool c_playerDefend = false;
 
+	[SerializeField]
+	private Slider c_healthBar;
+
 	// Use this for initialization
 	void Start () {
 		c_playerCurrentHealth = c_playerMaxHealth;
+		c_healthBar.value = ((float)c_playerCurrentHealth/(float)c_playerMaxHealth) * 100;
 	}
 	
 	// Update is called once per frame
@@ -30,11 +38,14 @@ public class PlayerHealth : MonoBehaviour {
 		c_playerDefend = false;
 	}
 
-	public void TakeDamage(int l_damage){
+	public void TakeDamage(BattleDialogue l_takeDamage){
 		if (c_playerDefend) {
-			l_damage /= 2;
+			l_takeDamage.c_damage /= 2;
 		}
-		c_playerCurrentHealth -= l_damage;
+		c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " dealt " + l_takeDamage.c_damage + " damage to " + gameObject.name + ".");
+		c_UI.CreateFloatingText ("" + l_takeDamage.c_damage, Color.red, gameObject);
+		c_playerCurrentHealth -= l_takeDamage.c_damage;
+		c_healthBar.value = ((float)c_playerCurrentHealth/(float)c_playerMaxHealth) * 100;
 	}
 
 	void OnDestroy(){
