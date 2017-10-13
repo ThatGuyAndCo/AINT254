@@ -73,6 +73,7 @@ public class PlayerAttack : MonoBehaviour {
 			c_myTurnObject.c_delayValue += 25;
 			c_myTurn = false;
 			Debug.Log ("" + gameObject.name + " attacked");
+			c_UI.DynamicHide (false);
 			Invoke("DelayCallNext", 1.5f);
 		} else {
 			Debug.Log ("Please select a new target.");
@@ -85,11 +86,12 @@ public class PlayerAttack : MonoBehaviour {
 		c_myTurn = false;
 		c_UI.UpdateBattleDialogue ("" + gameObject.name + " defended.");
 		Debug.Log ("" + gameObject.name + " defended");
-		DelayCallNext ();
+		c_UI.DynamicHide (false);
+		Invoke("DelayCallNext", 1.5f);
 	}
 
 	private void DelayCallNext(){
-		c_UI.DynamicHide (false);
+		
 		TurnOrder.CallNextTurn ();
 	}
 

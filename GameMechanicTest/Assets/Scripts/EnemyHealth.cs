@@ -21,7 +21,6 @@ public class EnemyHealth : MonoBehaviour {
 	void Start () {
 		c_currentHealth = c_maxHealth;
 		c_healthBar.value = ((float)c_currentHealth / (float)c_maxHealth) * 100;
-		Debug.Log (c_healthBar.value);
 	}
 	
 	// Update is called once per frame
@@ -34,9 +33,7 @@ public class EnemyHealth : MonoBehaviour {
 		c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " dealt " + l_takeDamage.c_damage + " damage to " + gameObject.name + ".");
 		c_UI.CreateFloatingText ("" + l_takeDamage.c_damage, Color.red, gameObject);
 		c_currentHealth -= l_takeDamage.c_damage;
-		Debug.Log (c_currentHealth);
 		c_healthBar.value = ((float)c_currentHealth / (float)c_maxHealth) * 100;
-		Debug.Log (c_healthBar.value);
 	}
 
 	void OnDestroy(){
