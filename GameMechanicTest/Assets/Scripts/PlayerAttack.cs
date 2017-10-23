@@ -7,8 +7,7 @@ public class PlayerAttack : MonoBehaviour {
 	private TurnObject c_myTurnObject;
 	private PlayerHealth c_playerHealthScript;
 
-	[SerializeField]
-	private bool c_myTurn;
+	public bool c_myTurn;
 
 	[SerializeField]
 	private GameObject c_enemy;
@@ -23,6 +22,7 @@ public class PlayerAttack : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl>();
 		c_myTurnObject = new TurnObject (gameObject, c_personalDelay);
 		TurnOrder.s_turnOrderList.Add (c_myTurnObject);
 		c_myTurnObject.c_myIndex = (TurnOrder.s_turnOrderList.Count - 1);

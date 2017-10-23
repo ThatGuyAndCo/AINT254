@@ -19,6 +19,7 @@ public class EnemyHealth : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl>();
 		c_currentHealth = c_maxHealth;
 		c_healthBar.value = ((float)c_currentHealth / (float)c_maxHealth) * 100;
 	}

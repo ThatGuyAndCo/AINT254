@@ -7,6 +7,7 @@ TagManager:
   - PlayerTeam
   - EnemyTeam
   - FloatingCanvas
+  - UICanvas
   layers:
   - Default
   - TransparentFX

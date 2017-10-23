@@ -20,6 +20,7 @@ public class PlayerHealth : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl>();
 		c_playerCurrentHealth = c_playerMaxHealth;
 		c_healthBar.value = ((float)c_playerCurrentHealth/(float)c_playerMaxHealth) * 100;
 	}
