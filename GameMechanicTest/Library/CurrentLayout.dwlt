@@ -40,8 +40,8 @@ MonoBehaviour:
     y: 1063
     width: 1853
     height: 244
-  m_MinSize: {x: 102, y: 121}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -67,8 +67,8 @@ MonoBehaviour:
     y: 0
     width: 1853
     height: 1307
-  m_MinSize: {x: 202, y: 342}
-  m_MaxSize: {x: 4002, y: 8042}
+  m_MinSize: {x: 202, y: 321}
+  m_MaxSize: {x: 4002, y: 8021}
   vertical: 1
   controlID: 13
 --- !u!114 &4
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_MinSize: {x: 711, y: 471}
   m_MaxSize: {x: 18006, y: 14021}
   vertical: 1
-  controlID: 146
+  controlID: 11
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -182,7 +182,7 @@ MonoBehaviour:
   m_MinSize: {x: 711, y: 471}
   m_MaxSize: {x: 18006, y: 14021}
   vertical: 0
-  controlID: 147
+  controlID: 12
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_MinSize: {x: 234, y: 471}
   m_MaxSize: {x: 10004, y: 14021}
   vertical: 1
-  controlID: 38
+  controlID: 85
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -419,9 +419,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 469.409, y: -376.9671, z: 344.91992}
+    m_Target: {x: 88.12563, y: -529.8506, z: 169.12917}
     speed: 2
-    m_Value: {x: 469.409, y: -376.9671, z: 344.91992}
+    m_Value: {x: 88.12563, y: -529.8506, z: 169.12917}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -444,13 +444,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.4191337, y: 0.038113974, z: -0.017613797, w: -0.9069532}
+    m_Target: {x: -0.5840024, y: -0.1809059, z: 0.13550907, w: -0.77964836}
     speed: 2
-    m_Value: {x: -0.4191337, y: 0.038113974, z: -0.017613797, w: -0.9069532}
+    m_Value: {x: -0.5840024, y: -0.1809059, z: 0.13550907, w: -0.77964836}
   m_Size:
-    m_Target: 1545.0535
+    m_Target: 662.2106
     speed: 2
-    m_Value: 1545.0535
+    m_Value: 662.2106
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -703,8 +703,8 @@ MonoBehaviour:
     height: 771
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 6a260000
-    m_LastClickedID: 0
+    m_SelectedIDs: 0c270000
+    m_LastClickedID: 9996
     m_ExpandedIDs: 1afcffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -766,19 +766,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Prefabs
+    - Assets/Scripts
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets/Scripts
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\jamorgan\Documents\AINT254\GameMechanicTest
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 86260000
-    m_LastClickedID: 9862
-    m_ExpandedIDs: 000000002e2600003426000000ca9a3bffffff7f
+    m_SelectedIDs: 40260000
+    m_LastClickedID: 9792
+    m_ExpandedIDs: 000000003a2600004026000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -806,7 +806,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000002e26000034260000
+    m_ExpandedIDs: 000000003a26000040260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -837,18 +837,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: b4240000422600006e2400007c24000092240000182a0000d6eeffffd4260000ea2600003e2700000627000078250000c0240000ae24000084240000cc2400001a2900001c2900000486ffffc482ffff88250000c42400008c240000ba2800001e270000da9cffff54340100042900001a270000482700002a2900008e240000342400007cc4faff06a4fdffec26000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: PlayerMove
+      m_OriginalName: PlayerMove
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 1720
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 12}
     m_CreateAssetUtility:
