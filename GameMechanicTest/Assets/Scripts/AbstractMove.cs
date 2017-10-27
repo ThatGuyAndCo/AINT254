@@ -10,7 +10,7 @@ public abstract class AbstractMove : MonoBehaviour {
 
 	protected abstract bool IsThereObstruction (Vector3 l_node);
 
-	protected abstract void MoveToNextNode();
+	//protected abstract void MoveToNextNode();
 
 	protected abstract bool IsTurnOver(Vector3 l_startPos, Vector3 l_endPos);
 

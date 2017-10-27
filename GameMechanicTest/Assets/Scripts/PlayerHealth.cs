@@ -36,8 +36,11 @@ public class PlayerHealth : MonoBehaviour {
 
 	public void Defend(){
 		c_playerDefend = true;
-		Debug.Log ("Calling Initiate move");
-		//c_playerMove.InitiateMove (transform.position, new Vector3 (45, 0, 45), true);
+	}
+
+	public void Move (){
+		Debug.Log ("Calling Initiate Move");
+		c_playerMove.InitiateMove (transform.position, new Vector3 (75,0,55), true);
 	}
 
 	public void CancelDefend(){

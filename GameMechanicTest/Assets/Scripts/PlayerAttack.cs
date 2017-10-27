@@ -6,6 +6,9 @@ public class PlayerAttack : MonoBehaviour {
 
 	private TurnObject c_myTurnObject;
 	private PlayerHealth c_playerHealthScript;
+	private bool c_checkForMove;
+
+	private PlayerMove c_playerMove;
 
 	public bool c_myTurn;
 
@@ -30,30 +33,51 @@ public class PlayerAttack : MonoBehaviour {
 			c_UI.UpdateActiveCharacter (gameObject);
 		}
 		c_playerHealthScript = GetComponent<PlayerHealth> ();
-		c_enemyHealthScript = c_enemy.GetComponent<EnemyHealth> ();
+		if(c_enemy != null)
+			c_enemyHealthScript = c_enemy.GetComponent<EnemyHealth> ();
+		c_playerMove = GetComponent<PlayerMove> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (c_myTurn == true){
-			
-			if (Input.GetMouseButtonDown (0)) {
-				RaycastHit hitInfo = new RaycastHit ();
-				bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-				if (hit) {
-					if (hitInfo.transform.gameObject.tag == "EnemyTeam") {
-						c_enemy = hitInfo.transform.gameObject;
-						c_UI.UpdateBattleDialogue ("" + gameObject.name + " is now targeting " + c_enemy.name + ".");
-						Debug.Log ("Selected new enemy");
-						c_enemyHealthScript = c_enemy.GetComponent<EnemyHealth> ();
-					}
-				}
+		if (c_myTurn) {
+			if (Input.GetKeyDown (KeyCode.W)) {
+				c_checkForMove = !c_checkForMove;
+				c_UI.DynamicHide (!c_checkForMove);
 			}
 
-			if (Input.GetKeyDown (KeyCode.A)) {
-				MyAttack ();
-			} else if (Input.GetKeyDown (KeyCode.D)) {
-				MyDefend ();
+			if (!c_checkForMove) {
+				if (Input.GetMouseButtonDown (0)) {
+					RaycastHit hitInfo = new RaycastHit ();
+					bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
+					if (hit) {
+						if (hitInfo.transform.gameObject.tag == "EnemyTeam") {
+							c_enemy = hitInfo.transform.gameObject;
+							c_UI.UpdateBattleDialogue ("" + gameObject.name + " is now targeting " + c_enemy.name + ".");
+							Debug.Log ("Selected new enemy");
+							c_enemyHealthScript = c_enemy.GetComponent<EnemyHealth> ();
+						}
+					}
+				}
+				if (Input.GetKeyDown (KeyCode.A)) {
+					MyAttack ();
+				} else if (Input.GetKeyDown (KeyCode.D)) {
+					MyDefend ();
+				}
+			} else if (c_checkForMove) {
+				if (Input.GetMouseButtonDown (0)) {
+					Vector3 l_movePos = new Vector3 (0, 0, 0);
+					RaycastHit hitInfo = new RaycastHit ();
+					bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
+					if (hit) {
+						if (hitInfo.transform.gameObject.tag == "MoveCube") {
+							l_movePos = hitInfo.transform.position;
+							c_UI.UpdateBattleDialogue ("Moving...");
+							Debug.Log ("Selected movement square");
+							MyMove (l_movePos);
+						}
+					}
+				}
 			}
 		}
 	}
@@ -88,6 +112,14 @@ public class PlayerAttack : MonoBehaviour {
 		Debug.Log ("" + gameObject.name + " defended");
 		c_UI.DynamicHide (false);
 		Invoke("DelayCallNext", 1.5f);
+	}
+
+	public void MyMove(Vector3 l_target){
+		//Debug.Log ("Calling Move without target");
+		//c_playerHealthScript.Move ();
+		Debug.Log ("Calling Move with target");
+		Debug.Log (l_target);
+		c_playerMove.InitiateMove (transform.position, l_target, false);
 	}
 
 	private void DelayCallNext(){

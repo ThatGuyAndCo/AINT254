@@ -38,20 +38,26 @@ public class GridTest : MonoBehaviour {
 
 	public static int[] GetArrayPosFromVector(Vector3 l_myPos)
 	{
-		Debug.Log ("Called Initiate move");
+		Debug.Log ("Called GetPosFromVec");
 		int[] l_returnArrayPos = new int[2];
 
 		for (int x = 0; x < s_gridPosArray.GetLength (0); x++) 
 		{
+			Debug.Log ("Testing X @: " + x + ", Local value " + s_gridPosArray [x, 0].x + ". Expected value: " + l_myPos.x);
 			if (s_gridPosArray [x, 0].x == l_myPos.x) 
 			{
+				Debug.Log ("X found @: " + x + " with value local value " + s_gridPosArray [x, 0].x + ". Expected value: " + l_myPos.x);
 				l_returnArrayPos [0] = x;
                                                        
+
 				for (int z = 0; z < s_gridPosArray.GetLength (1); z++) 
 				{
-					if (s_gridPosArray [x, z].z == l_myPos.z)
+					Debug.Log ("Testing Z @: " + z + " Local value " + s_gridPosArray [x, z].z + ". Expected value: " + l_myPos.z);
+					if (s_gridPosArray [x, z].z == l_myPos.z) {
 						l_returnArrayPos [1] = z;
-					return l_returnArrayPos;
+						Debug.Log ("Z found @: " + z + " with value local value " + s_gridPosArray [x, z].z + ". Expected value: " + l_myPos.z);
+						return l_returnArrayPos;
+					}
 				}
 			}
 		}
@@ -65,7 +71,15 @@ public class GridTest : MonoBehaviour {
 
 		for (int x = 5; x < (c_columns * 10) + 5; x += 10) {
 			for (int z = 5; z < (c_rows * 10) + 5; z += 10) {
-				s_gridPosArray [(x - 5) / 10, (z - 5) / 10] = new Vector3 (x, 0f, z);
+
+				int l_testX = (x - 5) / 10;
+				l_testX = c_columns - 1 - l_testX;
+
+				int l_testZ = (z - 5) / 10;
+				l_testZ = c_rows - 1 - l_testZ;
+
+				Debug.Log ("Array x: " + l_testX + ", Array z: " + l_testZ + ", values: x: " + x + ", z: " + z);
+				s_gridPosArray [l_testX, l_testZ] = new Vector3 (x , 0f, z);
 				c_gridPositions.Add (new Vector3 (x, 0f, z));
 			}
 		}
@@ -74,8 +88,8 @@ public class GridTest : MonoBehaviour {
 	void BoardSetup(){
 		c_myBoard = new GameObject ("Board").transform;
 
-		for (int x = 0; x < (c_columns * 10) + 5; x += 10) {
-			for (int z = 0; z < (c_rows * 10) + 5; z += 10) {
+		for (int x = 5; x < (c_columns * 10) + 5; x += 10) {
+			for (int z = 5; z < (c_rows * 10) + 5; z += 10) {
 				GameObject l_toInstantiate = c_floor;
 				GameObject l_instance = Instantiate (l_toInstantiate, new Vector3 (x, 0f, z), Quaternion.identity) as GameObject;
 				l_instance.transform.SetParent (c_myBoard);

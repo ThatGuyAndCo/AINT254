@@ -8,6 +8,7 @@ TagManager:
   - EnemyTeam
   - FloatingCanvas
   - UICanvas
+  - MoveCube
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - PlayerTeam
+  - EnemyTeam
   - 
   - 
   - 
