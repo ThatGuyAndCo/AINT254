@@ -18,11 +18,14 @@ public class PlayerHealth : MonoBehaviour {
 	[SerializeField]
 	private Slider c_healthBar;
 
+	private PlayerMove c_playerMove;
+
 	// Use this for initialization
 	void Start () {
 		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl>();
 		c_playerCurrentHealth = c_playerMaxHealth;
 		c_healthBar.value = ((float)c_playerCurrentHealth/(float)c_playerMaxHealth) * 100;
+		c_playerMove = GetComponent<PlayerMove> ();
 	}
 	
 	// Update is called once per frame
@@ -33,6 +36,8 @@ public class PlayerHealth : MonoBehaviour {
 
 	public void Defend(){
 		c_playerDefend = true;
+		Debug.Log ("Calling Initiate move");
+		//c_playerMove.InitiateMove (transform.position, new Vector3 (45, 0, 45), true);
 	}
 
 	public void CancelDefend(){

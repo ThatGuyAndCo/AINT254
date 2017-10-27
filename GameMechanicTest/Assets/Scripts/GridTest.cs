@@ -29,14 +29,43 @@ public class GridTest : MonoBehaviour {
 	public GameObject c_player;
 
 	private Transform c_myBoard;
-	private List <Vector3> c_gridPositions = new List<Vector3> ();
 
+	//Here I use both a 2-dimensional array and a list. The list is used to generate players/enemies/items/terrain etc and remove positions that already have things in that position.
+	//The Array however, will be used to move around the terrain later in the player and enemy move functions (as such it is static).
+	private List <Vector3> c_gridPositions = new List<Vector3> ();
+	public static Vector3[,] s_gridPosArray; //[x,z]
+
+
+	public static int[] GetArrayPosFromVector(Vector3 l_myPos)
+	{
+		Debug.Log ("Called Initiate move");
+		int[] l_returnArrayPos = new int[2];
+
+		for (int x = 0; x < s_gridPosArray.GetLength (0); x++) 
+		{
+			if (s_gridPosArray [x, 0].x == l_myPos.x) 
+			{
+				l_returnArrayPos [0] = x;
+                                                       
+				for (int z = 0; z < s_gridPosArray.GetLength (1); z++) 
+				{
+					if (s_gridPosArray [x, z].z == l_myPos.z)
+						l_returnArrayPos [1] = z;
+					return l_returnArrayPos;
+				}
+			}
+		}
+
+		return new int[]{ -100, -100 };
+	}
 
 	void InitialiseList(){
+		s_gridPosArray = new Vector3[c_columns, c_rows];
 		c_gridPositions.Clear ();
 
 		for (int x = 5; x < (c_columns * 10) + 5; x += 10) {
 			for (int z = 5; z < (c_rows * 10) + 5; z += 10) {
+				s_gridPosArray [(x - 5) / 10, (z - 5) / 10] = new Vector3 (x, 0f, z);
 				c_gridPositions.Add (new Vector3 (x, 0f, z));
 			}
 		}

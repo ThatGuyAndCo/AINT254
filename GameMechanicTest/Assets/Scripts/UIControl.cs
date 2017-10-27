@@ -19,6 +19,7 @@ public class UIControl: MonoBehaviour
 	[SerializeField]
 	private Text c_battleDialogue;
 
+
 	private FloatingDamageTest c_floatingTextTest;
 
 	void Start(){

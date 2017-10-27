@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FloatingTextTracker : MonoBehaviour {
 
-	public GameObject c_characterToFloatOver;
+	private GameObject c_characterToFloatOver;
 
 	private Text c_textToDisplay;
 
@@ -41,5 +41,9 @@ public class FloatingTextTracker : MonoBehaviour {
 		c_textToDisplay = GetComponent<Text> ();
 		c_textToDisplay.text = l_textToDisplay;
 		c_textToDisplay.color = l_colourToDisplay;
+	}
+		
+	public void setCharacterToFloatOver(GameObject l_characterToFloatOver){
+		c_characterToFloatOver = l_characterToFloatOver;
 	}
 }
