@@ -21,10 +21,11 @@ public class GridTest : MonoBehaviour {
 
 	public int c_columns;
 	public int c_rows;
-	public Count c_playerChars = new Count(3, 5);
-	public Count c_enemyChars = new Count (3, 5);
+	public Count c_playerChars = new Count(2, 4);
+	public Count c_enemyChars = new Count (4, 6);
 
 	public GameObject c_floor;
+	public GameObject c_wall;
 	public GameObject c_enemy;
 	public GameObject c_player;
 
@@ -38,24 +39,19 @@ public class GridTest : MonoBehaviour {
 
 	public static int[] GetArrayPosFromVector(Vector3 l_myPos)
 	{
-		Debug.Log ("Called GetPosFromVec");
 		int[] l_returnArrayPos = new int[2];
 
 		for (int x = 0; x < s_gridPosArray.GetLength (0); x++) 
 		{
-			Debug.Log ("Testing X @: " + x + ", Local value " + s_gridPosArray [x, 0].x + ". Expected value: " + l_myPos.x);
 			if (s_gridPosArray [x, 0].x == l_myPos.x) 
 			{
-				Debug.Log ("X found @: " + x + " with value local value " + s_gridPosArray [x, 0].x + ". Expected value: " + l_myPos.x);
 				l_returnArrayPos [0] = x;
                                                        
 
 				for (int z = 0; z < s_gridPosArray.GetLength (1); z++) 
 				{
-					Debug.Log ("Testing Z @: " + z + " Local value " + s_gridPosArray [x, z].z + ". Expected value: " + l_myPos.z);
 					if (s_gridPosArray [x, z].z == l_myPos.z) {
 						l_returnArrayPos [1] = z;
-						Debug.Log ("Z found @: " + z + " with value local value " + s_gridPosArray [x, z].z + ". Expected value: " + l_myPos.z);
 						return l_returnArrayPos;
 					}
 				}
@@ -78,20 +74,26 @@ public class GridTest : MonoBehaviour {
 				int l_testZ = (z - 5) / 10;
 				l_testZ = c_rows - 1 - l_testZ;
 
-				Debug.Log ("Array x: " + l_testX + ", Array z: " + l_testZ + ", values: x: " + x + ", z: " + z);
-				s_gridPosArray [l_testX, l_testZ] = new Vector3 (x , 0f, z);
-				c_gridPositions.Add (new Vector3 (x, 0f, z));
+				s_gridPosArray [l_testX, l_testZ] = new Vector3 (x , -1f, z);
+				c_gridPositions.Add (new Vector3 (x, -1f, z));
 			}
 		}
 	}
 
 	void BoardSetup(){
 		c_myBoard = new GameObject ("Board").transform;
+		GameObject l_toInstantiate = c_floor;
 
 		for (int x = 5; x < (c_columns * 10) + 5; x += 10) {
 			for (int z = 5; z < (c_rows * 10) + 5; z += 10) {
-				GameObject l_toInstantiate = c_floor;
-				GameObject l_instance = Instantiate (l_toInstantiate, new Vector3 (x, 0f, z), Quaternion.identity) as GameObject;
+				if (x == 5 || z == 5 || x == (c_columns * 10) - 5 || z == (c_rows * 10) - 5) {
+					l_toInstantiate = c_wall;
+					c_gridPositions.Remove(new Vector3 (x, -1f, z));
+				}
+				else
+					l_toInstantiate = c_floor;
+				
+				GameObject l_instance = Instantiate (l_toInstantiate, new Vector3 (x, -1f, z), Quaternion.identity) as GameObject;
 				l_instance.transform.SetParent (c_myBoard);
 			}
 		}
@@ -102,13 +104,16 @@ public class GridTest : MonoBehaviour {
 		int l_players = Random.Range (c_playerChars.c_min, c_playerChars.c_max);
 		bool l_mainAssigned = false;
 
+		Vector3 l_verticalOffset = new Vector3(0,1,0);
+
 		for (int l_Count = 0; l_Count < l_players; l_Count++) {
 			int l_randomIndex = Random.Range (0, c_gridPositions.Count / 2);
-			GameObject l_newPlayer = Instantiate (c_player, c_gridPositions [l_randomIndex], Quaternion.identity);
+			GameObject l_newPlayer = Instantiate (c_player, c_gridPositions [l_randomIndex] + l_verticalOffset, Quaternion.identity);
 			l_newPlayer.transform.SetParent (c_myBoard);
 
 			if (!l_mainAssigned) {
 				l_newPlayer.GetComponent<PlayerAttack> ().c_myTurn = true;
+				l_newPlayer.GetComponent<ParticleSystem> ().Play();
 				l_mainAssigned = true;
 			}
 			
@@ -119,7 +124,7 @@ public class GridTest : MonoBehaviour {
 		int l_enemies = Random.Range (c_enemyChars.c_min, c_enemyChars.c_max);
 		for (int l_Count = 0; l_Count < l_enemies; l_Count++) {
 			int l_randomIndex = Random.Range (c_gridPositions.Count / 2 - l_gridPositionsRemoved, c_gridPositions.Count);
-			GameObject l_newEnemy = Instantiate (c_enemy, c_gridPositions [l_randomIndex], Quaternion.identity);
+			GameObject l_newEnemy = Instantiate (c_enemy, c_gridPositions [l_randomIndex] + l_verticalOffset, Quaternion.identity);
 			l_newEnemy.transform.SetParent (c_myBoard);
 			c_gridPositions.RemoveAt (l_randomIndex);
 		}

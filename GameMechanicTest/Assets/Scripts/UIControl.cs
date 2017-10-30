@@ -45,6 +45,14 @@ public class UIControl: MonoBehaviour
 		c_playerAttackScript.MyDefend ();
 	}
 
+	public void MoveButtonClicked(){
+		c_playerAttackScript.SetupMove ();
+	}
+
+	public void EndTurnButtonClicked(){
+		c_playerAttackScript.EndTurn ();
+	}
+
 	public void UpdateBattleDialogue(string l_battleText){
 		c_battleDialogue.text = l_battleText;
 	}

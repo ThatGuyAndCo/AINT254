@@ -29,9 +29,9 @@ public class EnemyAttack : MonoBehaviour {
 		int l_randomTarget = Random.Range (0, c_targets.Length);
 		l_target = c_targets [l_randomTarget];
 		c_playerHealthScript = l_target.GetComponent<PlayerHealth> ();
-		BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, 20);
+		BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, 15);
 		c_playerHealthScript.TakeDamage (l_sendDamage);
-		c_myTurnObject.c_delayValue += 30;
+		c_myTurnObject.c_delayValue += 20;
 		Debug.Log ("Enemy attacked");
 		Invoke("DelayCallNext", 1.5f);
 	}

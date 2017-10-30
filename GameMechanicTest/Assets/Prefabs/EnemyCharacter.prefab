@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_UI: {fileID: 0}
-  c_maxHealth: 100
+  c_maxHealth: 65
   c_currentHealth: 0
   c_healthBar: {fileID: 114607206328551656}
 --- !u!114 &114491171324433586
