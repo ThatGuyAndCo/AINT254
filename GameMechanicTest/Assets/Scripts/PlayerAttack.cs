@@ -62,7 +62,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_attacked = false;
 
 		if(!c_myTurn)
-			c_particleComponent.Pause();
+			c_particleComponent.Stop();
 	}
 	
 	// Update is called once per frame
@@ -267,6 +267,8 @@ public class PlayerAttack : MonoBehaviour {
 			c_UI.UpdateBattleDialogue ("Moving...");
 			c_currentlyMoving = "Called Move";
 			c_currentlyMoving = c_playerMove.InitiateMove (transform.position, l_target);
+			c_myTurnObject.c_delayValue += 10;
+
 			foreach (GameObject tile in c_squaresInRange) {
 				tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.white);
 			}
@@ -286,7 +288,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_UI.UpdateBattleDialogue ("Turn over.");
 		c_myTurn = false;
 		c_UI.DynamicHide (false);
-		c_particleComponent.Pause();
+		c_particleComponent.Stop();
 		Invoke ("DelayCallNext", 1.5f);
 	}
 
