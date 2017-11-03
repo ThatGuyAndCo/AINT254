@@ -28,6 +28,11 @@ public class UIControl: MonoBehaviour
 	[SerializeField]
 	private Camera c_main;
 
+	[SerializeField]
+	private GameObject c_movementButton;
+	[SerializeField]
+	private GameObject c_resetMoveButton;
+
 
 	private FloatingDamageTest c_floatingTextTest;
 
@@ -59,6 +64,20 @@ public class UIControl: MonoBehaviour
 		c_playerAttackScript.SetupMove ();
 	}
 
+	public void CancelMoveClicked(){
+		c_playerAttackScript.ResetMovement ();
+	}
+
+	public void UpdateUIMoved(bool moved){//true means UI will display cancel button, false displays move
+		if (moved) {
+			c_movementButton.SetActive (false);
+			c_resetMoveButton.SetActive (true);
+		} else {
+			c_movementButton.SetActive (true);
+			c_resetMoveButton.SetActive (false);
+		}
+	}
+
 	public void EndTurnButtonClicked(){
 		c_playerAttackScript.EndTurn ();
 	}
@@ -73,8 +92,23 @@ public class UIControl: MonoBehaviour
 
 	public void UpdateCamera(GameObject l_charToFloat){
 		c_main.transform.SetParent (l_charToFloat.transform);
-		c_main.transform.position = l_charToFloat.transform.position + c_cameraPositionOffset;
+		StartCoroutine (TransitionCamera (l_charToFloat.transform.position));
+		//c_main.transform.position = Vector3.MoveTowards(transform.position, l_charToFloat.transform.position + c_cameraPositionOffset, 150f);
 		c_main.transform.rotation = Quaternion.Euler(c_cameraRotation);
+	}
+
+	private IEnumerator TransitionCamera(Vector3 l_charToFloat){
+
+		while (c_main.transform.position != l_charToFloat + c_cameraPositionOffset) 
+		{
+			Vector3 dir = ((l_charToFloat + c_cameraPositionOffset) - c_main.transform.position).normalized;
+			c_main.transform.position += dir * 35f * Time.deltaTime;
+
+			if (Mathf.Abs (((l_charToFloat + c_cameraPositionOffset) - c_main.transform.position).magnitude) < 1)
+				c_main.transform.position = l_charToFloat + c_cameraPositionOffset;
+			yield return null;
+		}
+		StopCoroutine ("TransitionCamera");
 	}
 }
 

@@ -51,6 +51,8 @@ public class PlayerAttack : MonoBehaviour {
 	[SerializeField]
 	private string c_enemyDamageTag;
 
+	private bool resetMove;
+
 	// Use this for initialization
 	void Start () {
 		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl>();
@@ -72,6 +74,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_enemiesInAttackRange = new List<GameObject> ();
 		c_attacked = false;
 		c_setupAttack = false;
+		resetMove = false;
 
 		if(!c_myTurn)
 			c_particleComponent.Stop();
@@ -94,13 +97,19 @@ public class PlayerAttack : MonoBehaviour {
 			if(c_currentlyMoving == "Finished Moving")
 			{
 				c_UI.DynamicHide (true);
-				if (Input.GetKeyDown (KeyCode.Backspace)) 
+				if (Input.GetKeyDown (KeyCode.Backspace) || resetMove) 
 				{
+					resetMove = false;
 					transform.position = c_saveStartPosition;
 					c_currentlyMoving = "Restart Move";
+					c_UI.UpdateUIMoved (false);
 				}
 			}
 		}
+	}
+
+	public void ResetMovement(){
+		resetMove = true;
 	}
 
 	public void Attack(){ //Called to start player turn
@@ -322,7 +331,7 @@ public class PlayerAttack : MonoBehaviour {
 			c_currentlyMoving = "Called Move";
 			c_currentlyMoving = c_playerMove.InitiateMove (transform.position, l_target);
 			c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.4);
-
+			c_UI.UpdateUIMoved (true);
 			ClearTileColourInGrid (c_squaresInMoveRange);
 			if (c_attacked) 
 			{
@@ -344,6 +353,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.2);
 		ClearTileColourInGrid (c_squaresInAttackRange);
 		ClearTileColourInGrid (c_squaresInMoveRange);
+		c_UI.UpdateUIMoved (false);
 		c_enemiesInAttackRange.Clear ();
 		Invoke ("DelayCallNext", 1.5f);
 	}

@@ -207,8 +207,8 @@ public class PlayerMove : AbstractMove {
 	{
 		Debug.Log ("Obtained " + l_node + " as test obstruction node");
 		RaycastHit hit;
-		Physics.Raycast (l_node, Vector3.up, out hit, 100f);
-		Debug.DrawRay (l_node + new Vector3(0, 50, 0), Vector3.up * 100, Color.blue, 10f);
+		Physics.Raycast (l_node + new Vector3(0, 50, 0), -Vector3.up, out hit, 60f);
+		Debug.DrawRay (l_node + new Vector3(0, 50, 0), -Vector3.up * 50, Color.blue, 10f);
 
 		if (hit.collider != null && !hit.collider.CompareTag("MoveCube")) {
 			Debug.Log ("Ray hit: " + hit.collider.gameObject.name);
