@@ -21,7 +21,7 @@ public class GridTest : MonoBehaviour {
 
 	public int c_columns;
 	public int c_rows;
-	public Count c_playerChars = new Count(2, 4);
+	public Count c_playerChars = new Count(3, 5);
 	public Count c_enemyChars = new Count (4, 6);
 
 	public GameObject c_floor;
@@ -113,7 +113,7 @@ public class GridTest : MonoBehaviour {
 
 			if (!l_mainAssigned) {
 				l_newPlayer.GetComponent<PlayerAttack> ().c_myTurn = true;
-				l_newPlayer.GetComponent<ParticleSystem> ().Play();
+				l_newPlayer.GetComponent<PlayerAttack> ().c_particleComponent.Play();
 				l_mainAssigned = true;
 			}
 			

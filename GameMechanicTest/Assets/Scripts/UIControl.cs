@@ -19,6 +19,15 @@ public class UIControl: MonoBehaviour
 	[SerializeField]
 	private Text c_battleDialogue;
 
+	[SerializeField]
+	private Vector3 c_cameraRotation;
+
+	[SerializeField]
+	private Vector3 c_cameraPositionOffset;
+
+	[SerializeField]
+	private Camera c_main;
+
 
 	private FloatingDamageTest c_floatingTextTest;
 
@@ -31,6 +40,7 @@ public class UIControl: MonoBehaviour
 		c_activeCharacter = l_activeCharacter;
 		c_playerAttackScript = c_activeCharacter.GetComponent<PlayerAttack> ();
 		c_characterName.text = "" + l_activeCharacter.name + "'s turn";
+		UpdateCamera (l_activeCharacter);
 	}
 
 	public void DynamicHide(bool l_hide){ //true = display, false = hidden
@@ -59,6 +69,12 @@ public class UIControl: MonoBehaviour
 
 	public void CreateFloatingText(string l_textToDisplay, Color l_colourToDisplay, GameObject l_sender){
 		c_floatingTextTest.SetText (l_textToDisplay, l_colourToDisplay, l_sender);
+	}
+
+	public void UpdateCamera(GameObject l_charToFloat){
+		c_main.transform.SetParent (l_charToFloat.transform);
+		c_main.transform.position = l_charToFloat.transform.position + c_cameraPositionOffset;
+		c_main.transform.rotation = Quaternion.Euler(c_cameraRotation);
 	}
 }
 

@@ -8,7 +8,9 @@ public class PlayerAttack : MonoBehaviour {
 	private PlayerHealth c_playerHealthScript;
 	private bool c_checkForMove;
 
-	private List<GameObject> c_squaresInRange;
+	private List<GameObject> c_squaresInMoveRange;
+	private List<GameObject> c_squaresInAttackRange;
+	private List<GameObject> c_enemiesInAttackRange;
 
 	private PlayerMove c_playerMove;
 
@@ -17,7 +19,7 @@ public class PlayerAttack : MonoBehaviour {
 	[SerializeField]
 	private GameObject c_enemy;
 
-	private EnemyHealth c_enemyHealthScript;
+	private PlayerHealth c_enemyHealthScript;
 
 	[SerializeField]
 	private int c_personalDelay;
@@ -37,10 +39,17 @@ public class PlayerAttack : MonoBehaviour {
 	[SerializeField]
 	private int c_moveRangeValue;
 
-	[SerializeField]
-	private ParticleSystem c_particleComponent;
+	public ParticleSystem c_particleComponent;
 
 	private bool c_finishedCheckRange;
+
+	private bool c_setupAttack;
+
+	[SerializeField]
+	private int c_personalDamageValue;
+
+	[SerializeField]
+	private string c_enemyDamageTag;
 
 	// Use this for initialization
 	void Start () {
@@ -54,12 +63,15 @@ public class PlayerAttack : MonoBehaviour {
 		}
 		c_playerHealthScript = GetComponent<PlayerHealth> ();
 		if(c_enemy != null)
-			c_enemyHealthScript = c_enemy.GetComponent<EnemyHealth> ();
+			c_enemyHealthScript = c_enemy.GetComponent<PlayerHealth> ();
 		c_playerMove = GetComponent<PlayerMove> ();
 		c_saveStartPosition = transform.position;
 
-		c_squaresInRange = new List<GameObject>();
+		c_squaresInMoveRange = new List<GameObject>();
+		c_squaresInAttackRange = new List<GameObject> ();
+		c_enemiesInAttackRange = new List<GameObject> ();
 		c_attacked = false;
+		c_setupAttack = false;
 
 		if(!c_myTurn)
 			c_particleComponent.Stop();
@@ -74,32 +86,7 @@ public class PlayerAttack : MonoBehaviour {
 				SetupMove ();
 			}
 
-			if (!c_checkForMove) 
-			{
-				if (Input.GetMouseButtonDown (0)) 
-				{
-					RaycastHit hitInfo = new RaycastHit ();
-					bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
-					if (hit) 
-					{
-						if (hitInfo.transform.gameObject.tag == "EnemyTeam") 
-						{
-							c_enemy = hitInfo.transform.gameObject;
-							c_UI.UpdateBattleDialogue ("" + gameObject.name + " is now targeting " + c_enemy.name + ".");
-							Debug.Log ("Selected new enemy");
-							c_enemyHealthScript = c_enemy.GetComponent<EnemyHealth> ();
-						}
-					}
-				}
-				if (Input.GetKeyDown (KeyCode.A)) 
-				{
-					MyAttack ();
-				} 
-				else if (Input.GetKeyDown (KeyCode.D)) 
-				{
-					MyDefend ();
-				}
-			} 
+
 //			else if (c_checkForMove && c_currentlyMoving != "Finished Moving" && c_finishedCheckRange == true) 
 //			{
 //				
@@ -128,17 +115,49 @@ public class PlayerAttack : MonoBehaviour {
 	}
 
 	public void MyAttack(){
-		if (c_enemy != null && !c_attacked) 
+		if (!c_setupAttack && !c_attacked) {
+			c_setupAttack = true;
+			c_squaresInAttackRange.Clear ();
+			c_squaresInAttackRange = CheckRange (c_attackRangeValue, "MoveCube");
+			if (c_squaresInAttackRange.Count != 0) {
+				foreach (GameObject tile in c_squaresInAttackRange) {
+					Debug.Log ("Attempting to get character on tile...");
+					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag) != null){
+						Debug.Log (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
+					}
+					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag) != null) {
+						c_enemiesInAttackRange.Add (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
+						Debug.Log ("Added to tile");
+					}
+				}
+			}
+			if (c_enemiesInAttackRange.Count != 0) {
+				c_UI.UpdateBattleDialogue ("Please select a target.");
+				foreach (GameObject enemy in c_enemiesInAttackRange)
+					Debug.Log (enemy.name);
+				c_UI.DynamicHide (false);
+				StartCoroutine (SearchForTile (c_squaresInAttackRange));
+			} else {
+				c_UI.UpdateBattleDialogue ("There are no targets in range.");
+				c_setupAttack = false;
+				foreach (GameObject enemy in c_enemiesInAttackRange)
+					Debug.Log (enemy.name);
+			}
+		}
+		else if (c_enemy != null && !c_attacked) 
 		{
 			c_playerHealthScript.CancelDefend ();
-			BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, 25);
+			BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, c_personalDamageValue);
 			c_enemyHealthScript.TakeDamage (l_sendDamage);
-			c_myTurnObject.c_delayValue += 25;
+			c_myTurnObject.c_delayValue += c_personalDelay;
 			c_attacked = true;
 			Debug.Log ("" + gameObject.name + " attacked");
-			if (c_currentlyMoving == "Finished Moving") 
-			{
+			c_setupAttack = false;
+			ClearTileColourInGrid (c_squaresInAttackRange);
+			if (c_currentlyMoving == "Finished Moving") {
 				EndTurn ();
+			} else {
+				c_UI.DynamicHide (true);
 			}
 		} 
 		else if (c_attacked) 
@@ -155,7 +174,7 @@ public class PlayerAttack : MonoBehaviour {
 		if (!c_attacked) 
 		{
 			c_playerHealthScript.Defend ();
-			c_myTurnObject.c_delayValue += 15;
+			c_myTurnObject.c_delayValue += (int)(c_personalDelay*0.65f);
 			c_attacked = true;
 			c_UI.UpdateBattleDialogue ("" + gameObject.name + " defended.");
 			Debug.Log ("" + gameObject.name + " defended");
@@ -176,17 +195,11 @@ public class PlayerAttack : MonoBehaviour {
 			c_checkForMove = true;
 			c_UI.DynamicHide (false);
 			c_UI.UpdateBattleDialogue ("Select position to move to with left click, cancel with right click.");
-			c_squaresInRange.Clear ();
+			c_squaresInMoveRange.Clear ();
 			Debug.Log ("Calling CheckRange");
-			CheckRange (3, "MoveCube");
+			c_squaresInMoveRange = CheckRange (c_moveRangeValue, "MoveCube");
 			Debug.Log ("Finished CheckRange");
-
-			foreach (GameObject tile in c_squaresInRange) {
-				tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.yellow);
-				Debug.Log ("Trying to change colour of tiles");
-			}
-
-			StartCoroutine ("SearchForTile");
+			StartCoroutine (SearchForTile(c_squaresInMoveRange));
 		} 
 		else 
 		{
@@ -194,15 +207,22 @@ public class PlayerAttack : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator SearchForTile(){
+	public void ClearTileColourInGrid(List<GameObject> l_tilesInRange){
+		foreach (GameObject tile in l_tilesInRange) {
+			tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.white);
+			Debug.Log ("Trying to change colour of tiles");
+		}
+	}
+
+	public IEnumerator SearchForTile(List<GameObject> l_listInRange){
 		while (c_checkForMove) {
 			RaycastHit l_hoverInfo = new RaycastHit ();
 			if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out l_hoverInfo)) {
 				Debug.Log (l_hoverInfo.collider.gameObject.name);
-				foreach (GameObject tile in c_squaresInRange) {
+				foreach (GameObject tile in l_listInRange) {
 					tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.yellow);
 				}
-				if (l_hoverInfo.collider.CompareTag ("MoveCube") && c_squaresInRange.Contains (l_hoverInfo.collider.gameObject)) {
+				if (l_hoverInfo.collider.CompareTag ("MoveCube") && l_listInRange.Contains (l_hoverInfo.collider.gameObject)) {
 					l_hoverInfo.collider.GetComponent<Renderer> ().material.SetColor ("_Color", Color.green);
 				}
 				if (Input.GetMouseButtonDown (0)) {
@@ -210,10 +230,11 @@ public class PlayerAttack : MonoBehaviour {
 					RaycastHit hitInfo = new RaycastHit ();
 					bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
 					if (hit) {
-						if (hitInfo.transform.gameObject.tag == "MoveCube" && c_squaresInRange.Contains (hitInfo.collider.gameObject)) {
+						if (hitInfo.transform.gameObject.tag == "MoveCube" && l_listInRange.Contains (hitInfo.collider.gameObject)) {
 							l_movePos = hitInfo.transform.position;
 							c_UI.UpdateBattleDialogue ("Moving...");
 							Debug.Log ("Selected movement square");
+							ClearTileColourInGrid (c_squaresInMoveRange);
 							MyMove (l_movePos);
 							c_checkForMove = false;
 						}
@@ -224,13 +245,46 @@ public class PlayerAttack : MonoBehaviour {
 			}
 			yield return null;
 		}
+		while (c_setupAttack) {
+			RaycastHit l_hoverInfo = new RaycastHit ();
+			if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out l_hoverInfo)) {
+				Debug.Log (l_hoverInfo.collider.gameObject.name);
+				foreach (GameObject tile in l_listInRange) {
+					tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.yellow);
+				}
+				if (l_hoverInfo.collider.CompareTag ("MoveCube") && l_listInRange.Contains (l_hoverInfo.collider.gameObject)) {
+					l_hoverInfo.collider.GetComponent<Renderer> ().material.SetColor ("_Color", Color.green);
+				}
+
+				if (Input.GetMouseButtonDown (0)) {
+					RaycastHit hitInfo = new RaycastHit ();
+					bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
+					if (hit) {
+						if (hitInfo.transform.gameObject.tag == c_enemyDamageTag && c_enemiesInAttackRange.Contains (hitInfo.collider.gameObject)) {
+							c_enemy = hitInfo.transform.gameObject;
+							c_UI.UpdateBattleDialogue ("" + gameObject.name + " is now targeting " + c_enemy.name + ".");
+							Debug.Log ("Selected new enemy");
+							c_enemyHealthScript = c_enemy.GetComponent<PlayerHealth> ();
+							MyAttack ();
+						}
+					}
+				} else if (Input.GetMouseButtonDown (1)) {
+					c_setupAttack = false;
+					c_UI.DynamicHide (true);
+					ClearTileColourInGrid (c_squaresInAttackRange);
+					c_squaresInAttackRange.Clear ();
+					c_enemiesInAttackRange.Clear ();
+				}
+			}
+			yield return null;
+		}
 		Debug.Log ("Finishing SearchForTile");
 		StopCoroutine ("SearchForTile");
 	}
 
-	public void CheckRange(int rangeValue, string l_tagToCompare){
+	public List<GameObject> CheckRange(int rangeValue, string l_tagToCompare){
 		List<RaycastHit> l_inRange = new List<RaycastHit>();
-
+		List<GameObject> l_returnList = new List<GameObject> ();
 		for (int z = rangeValue; z >= 0; z--) {
 			for (int x = 0; x <= rangeValue; x++) {
 				if (x + z == rangeValue) {
@@ -245,17 +299,17 @@ public class PlayerAttack : MonoBehaviour {
 		}
 		foreach (RaycastHit hit in l_inRange) {
 			if(hit.collider.CompareTag(l_tagToCompare))
-				c_squaresInRange.Add (hit.collider.gameObject);
+				l_returnList.Add (hit.collider.gameObject);
 		}
+
+		return l_returnList;
 	}
 
 	public void CancelMove(){
 		c_checkForMove = false;
 		c_UI.DynamicHide (true);
-		foreach (GameObject tile in c_squaresInRange) {
-			tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.white);
-		}
-		c_squaresInRange.Clear ();
+		ClearTileColourInGrid (c_squaresInMoveRange);
+		c_squaresInMoveRange.Clear ();
 		c_UI.UpdateBattleDialogue ("Move Cancelled.");
 	}
 
@@ -267,11 +321,9 @@ public class PlayerAttack : MonoBehaviour {
 			c_UI.UpdateBattleDialogue ("Moving...");
 			c_currentlyMoving = "Called Move";
 			c_currentlyMoving = c_playerMove.InitiateMove (transform.position, l_target);
-			c_myTurnObject.c_delayValue += 10;
+			c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.4);
 
-			foreach (GameObject tile in c_squaresInRange) {
-				tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.white);
-			}
+			ClearTileColourInGrid (c_squaresInMoveRange);
 			if (c_attacked) 
 			{
 				Debug.Log ("Turn over.");
@@ -289,6 +341,10 @@ public class PlayerAttack : MonoBehaviour {
 		c_myTurn = false;
 		c_UI.DynamicHide (false);
 		c_particleComponent.Stop();
+		c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.2);
+		ClearTileColourInGrid (c_squaresInAttackRange);
+		ClearTileColourInGrid (c_squaresInMoveRange);
+		c_enemiesInAttackRange.Clear ();
 		Invoke ("DelayCallNext", 1.5f);
 	}
 

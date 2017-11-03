@@ -6,6 +6,7 @@ public class EnemyAttack : MonoBehaviour {
 
 	private TurnObject c_myTurnObject;
 	private GameObject[] c_targets;
+	private UIControl c_UI;
 
 	private PlayerHealth c_playerHealthScript;
 
@@ -17,6 +18,7 @@ public class EnemyAttack : MonoBehaviour {
 		c_myTurnObject = new TurnObject (gameObject, c_personalDelay);
 		TurnOrder.s_turnOrderList.Add (c_myTurnObject);
 		c_myTurnObject.c_myIndex = (TurnOrder.s_turnOrderList.Count - 1);
+		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl> ();
 	}
 	
 	// Update is called once per frame
@@ -24,6 +26,7 @@ public class EnemyAttack : MonoBehaviour {
 	}
 
 	public void Attack(){
+		c_UI.UpdateCamera (gameObject);
 		c_targets = GameObject.FindGameObjectsWithTag ("PlayerTeam");
 		GameObject l_target;
 		int l_randomTarget = Random.Range (0, c_targets.Length);

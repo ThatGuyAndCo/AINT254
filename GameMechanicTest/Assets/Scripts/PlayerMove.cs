@@ -206,20 +206,17 @@ public class PlayerMove : AbstractMove {
 	protected override bool IsThereObstruction (Vector3 l_node)
 	{
 		Debug.Log ("Obtained " + l_node + " as test obstruction node");
-		Debug.DrawRay (l_node, Vector3.up * 100, Color.red, 10f);
 		RaycastHit hit;
-		Physics.Raycast (l_node, Vector3.up, out hit, 100);
+		Physics.Raycast (l_node, Vector3.up, out hit, 100f);
+		Debug.DrawRay (l_node + new Vector3(0, 50, 0), Vector3.up * 100, Color.blue, 10f);
 
-		if(hit.collider != null)
+		if (hit.collider != null && !hit.collider.CompareTag("MoveCube")) {
 			Debug.Log ("Ray hit: " + hit.collider.gameObject.name);
-
-		if (l_node == new Vector3 (-100, -100, -100)) 
-		{
 			Debug.Log("Obstruction Found @ " + l_node);
 			return true;
 		}
 
-		if (Physics.Raycast (l_node, Vector3.up, 100))
+		if (l_node == new Vector3 (-100, -100, -100)) 
 		{
 			Debug.Log("Obstruction Found @ " + l_node);
 			return true;
