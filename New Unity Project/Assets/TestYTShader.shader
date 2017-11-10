@@ -111,7 +111,7 @@ Shader "Custom/TestYTShader" {
        
     float3 combinedLight = (ambientLight + diffuseReflection) * outlineStrength + specularReflection;
            
-    return float4(combinedLight, 1.0); // + tex2D(_MainTex, input.uv); // DELETE LINE COMMENTS & ';' TO ENABLE TEXTURE
+    return float4(combinedLight, 1.0) + tex2D(_MainTex, input.uv); // DELETE LINE COMMENTS & ';' TO ENABLE TEXTURE
        
  
         }

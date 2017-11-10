@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/TurnBasedCombatMechanicTestingScene.unity
+- path: Assets/Scenes/TurnBasedCombatMechanicTestingScene.unity
   isLoaded: 1
   isActive: 1

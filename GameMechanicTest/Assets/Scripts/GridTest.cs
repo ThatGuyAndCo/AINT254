@@ -21,13 +21,13 @@ public class GridTest : MonoBehaviour {
 
 	public int c_columns;
 	public int c_rows;
-	public Count c_playerChars = new Count(3, 5);
-	public Count c_enemyChars = new Count (4, 6);
+	public Count c_playerChars = new Count(6, 8);
+	public Count c_enemyChars = new Count (6, 8);
 
 	public GameObject c_floor;
 	public GameObject c_wall;
-	public GameObject c_enemy;
-	public GameObject c_player;
+	public GameObject[] c_enemies;
+	public GameObject[] c_players;
 
 	private Transform c_myBoard;
 
@@ -35,6 +35,9 @@ public class GridTest : MonoBehaviour {
 	//The Array however, will be used to move around the terrain later in the player and enemy move functions (as such it is static).
 	private List <Vector3> c_gridPositions = new List<Vector3> ();
 	public static Vector3[,] s_gridPosArray; //[x,z]
+
+	public static List<GameObject> s_playerCharacters = new List<GameObject>(); 
+	public static List<GameObject> s_enemyCharacters = new List<GameObject>(); 
 
 
 	public static int[] GetArrayPosFromVector(Vector3 l_myPos)
@@ -108,9 +111,10 @@ public class GridTest : MonoBehaviour {
 
 		for (int l_Count = 0; l_Count < l_players; l_Count++) {
 			int l_randomIndex = Random.Range (0, c_gridPositions.Count / 2);
-			GameObject l_newPlayer = Instantiate (c_player, c_gridPositions [l_randomIndex] + l_verticalOffset, Quaternion.identity);
+			int l_randomGO = Random.Range (0, c_players.Length);
+			GameObject l_newPlayer = Instantiate (c_players[l_randomGO], c_gridPositions [l_randomIndex] + l_verticalOffset, Quaternion.Euler(new Vector3(0,180,0)));
 			l_newPlayer.transform.SetParent (c_myBoard);
-
+			s_playerCharacters.Add(l_newPlayer);
 			if (!l_mainAssigned) {
 				l_newPlayer.GetComponent<PlayerAttack> ().c_myTurn = true;
 				l_newPlayer.GetComponent<PlayerAttack> ().c_particleComponent.Play();
@@ -124,8 +128,10 @@ public class GridTest : MonoBehaviour {
 		int l_enemies = Random.Range (c_enemyChars.c_min, c_enemyChars.c_max);
 		for (int l_Count = 0; l_Count < l_enemies; l_Count++) {
 			int l_randomIndex = Random.Range (c_gridPositions.Count / 2 - l_gridPositionsRemoved, c_gridPositions.Count);
-			GameObject l_newEnemy = Instantiate (c_enemy, c_gridPositions [l_randomIndex] + l_verticalOffset, Quaternion.identity);
+			int l_randomGO = Random.Range (0, c_enemies.Length);
+			GameObject l_newEnemy = Instantiate (c_enemies[l_randomGO], c_gridPositions [l_randomIndex] + l_verticalOffset, Quaternion.identity);
 			l_newEnemy.transform.SetParent (c_myBoard);
+			s_enemyCharacters.Add(l_newEnemy);
 			c_gridPositions.RemoveAt (l_randomIndex);
 		}
 	}

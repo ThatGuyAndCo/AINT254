@@ -161,7 +161,7 @@ public class PlayerMove : AbstractMove {
 			if (l_newNode != new Vector3 (-100, -100, -100)) 
 			{
 				Debug.Log ("New node is not dead value");
-				l_pathNodes.Add (l_newNode);
+				l_pathNodes.Add (l_newNode + new Vector3(0,1,0));
 				l_startPos = l_newNode;
 			} 
 			else 

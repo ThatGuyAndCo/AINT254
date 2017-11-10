@@ -21,7 +21,6 @@ public class PlayerAttack : MonoBehaviour {
 
 	private PlayerHealth c_enemyHealthScript;
 
-	[SerializeField]
 	private int c_personalDelay;
 
 	[SerializeField]
@@ -33,19 +32,12 @@ public class PlayerAttack : MonoBehaviour {
 	private Vector3 c_saveStartPosition;
 	private bool c_attacked;
 
-	[SerializeField]
-	private int c_attackRangeValue;
-
-	[SerializeField]
-	private int c_moveRangeValue;
-
 	public ParticleSystem c_particleComponent;
 
 	private bool c_finishedCheckRange;
 
 	private bool c_setupAttack;
 
-	[SerializeField]
 	private int c_personalDamageValue;
 
 	[SerializeField]
@@ -55,7 +47,9 @@ public class PlayerAttack : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		c_playerHealthScript = GetComponent<PlayerHealth> ();
 		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl>();
+		c_personalDelay = 30 / c_playerHealthScript.c_playerStats.playerSpeed;
 		c_myTurnObject = new TurnObject (gameObject, c_personalDelay);
 		TurnOrder.s_turnOrderList.Add (c_myTurnObject);
 		c_myTurnObject.c_myIndex = (TurnOrder.s_turnOrderList.Count - 1);
@@ -63,7 +57,6 @@ public class PlayerAttack : MonoBehaviour {
 		{
 			c_UI.UpdateActiveCharacter (gameObject);
 		}
-		c_playerHealthScript = GetComponent<PlayerHealth> ();
 		if(c_enemy != null)
 			c_enemyHealthScript = c_enemy.GetComponent<PlayerHealth> ();
 		c_playerMove = GetComponent<PlayerMove> ();
@@ -75,7 +68,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_attacked = false;
 		c_setupAttack = false;
 		resetMove = false;
-
+		c_personalDamageValue = c_playerHealthScript.c_playerStats.playerStrength * 3;
 		if(!c_myTurn)
 			c_particleComponent.Stop();
 	}
@@ -127,7 +120,7 @@ public class PlayerAttack : MonoBehaviour {
 		if (!c_setupAttack && !c_attacked) {
 			c_setupAttack = true;
 			c_squaresInAttackRange.Clear ();
-			c_squaresInAttackRange = CheckRange (c_attackRangeValue, "MoveCube");
+			c_squaresInAttackRange = CheckRange (c_playerHealthScript.c_playerStats.playerAttackRange, "MoveCube");
 			if (c_squaresInAttackRange.Count != 0) {
 				foreach (GameObject tile in c_squaresInAttackRange) {
 					Debug.Log ("Attempting to get character on tile...");
@@ -149,8 +142,10 @@ public class PlayerAttack : MonoBehaviour {
 			} else {
 				c_UI.UpdateBattleDialogue ("There are no targets in range.");
 				c_setupAttack = false;
-				foreach (GameObject enemy in c_enemiesInAttackRange)
-					Debug.Log (enemy.name);
+				foreach (GameObject tile in c_squaresInAttackRange) {
+					tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.red);
+				}
+				Invoke ("DelayClearingSetupTiles", 1.5f);
 			}
 		}
 		else if (c_enemy != null && !c_attacked) 
@@ -179,11 +174,15 @@ public class PlayerAttack : MonoBehaviour {
 		} 
 	}
 
+	private void DelayClearingSetupTiles(){
+		ClearTileColourInGrid (c_squaresInAttackRange);
+	}
+
 	public void MyDefend(){
 		if (!c_attacked) 
 		{
 			c_playerHealthScript.Defend ();
-			c_myTurnObject.c_delayValue += (int)(c_personalDelay*0.65f);
+			c_myTurnObject.c_delayValue += (int)(c_personalDelay*0.6f);
 			c_attacked = true;
 			c_UI.UpdateBattleDialogue ("" + gameObject.name + " defended.");
 			Debug.Log ("" + gameObject.name + " defended");
@@ -206,7 +205,7 @@ public class PlayerAttack : MonoBehaviour {
 			c_UI.UpdateBattleDialogue ("Select position to move to with left click, cancel with right click.");
 			c_squaresInMoveRange.Clear ();
 			Debug.Log ("Calling CheckRange");
-			c_squaresInMoveRange = CheckRange (c_moveRangeValue, "MoveCube");
+			c_squaresInMoveRange = CheckRange (c_playerHealthScript.c_playerStats.playerMoveRange, "MoveCube");
 			Debug.Log ("Finished CheckRange");
 			StartCoroutine (SearchForTile(c_squaresInMoveRange));
 		} 
@@ -330,7 +329,7 @@ public class PlayerAttack : MonoBehaviour {
 			c_UI.UpdateBattleDialogue ("Moving...");
 			c_currentlyMoving = "Called Move";
 			c_currentlyMoving = c_playerMove.InitiateMove (transform.position, l_target);
-			c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.4);
+			c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.7);
 			c_UI.UpdateUIMoved (true);
 			ClearTileColourInGrid (c_squaresInMoveRange);
 			if (c_attacked) 
@@ -350,7 +349,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_myTurn = false;
 		c_UI.DynamicHide (false);
 		c_particleComponent.Stop();
-		c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.2);
+		c_myTurnObject.c_delayValue += (int)(c_personalDelay * 0.5);
 		ClearTileColourInGrid (c_squaresInAttackRange);
 		ClearTileColourInGrid (c_squaresInMoveRange);
 		c_UI.UpdateUIMoved (false);

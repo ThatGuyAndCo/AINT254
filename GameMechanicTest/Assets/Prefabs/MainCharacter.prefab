@@ -252,7 +252,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1973973568581914}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
@@ -266,7 +266,7 @@ Transform:
   - {fileID: 224625041884634526}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4323847979202540
 Transform:
   m_ObjectHideFlags: 1
@@ -668,12 +668,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_myTurn: 0
   c_enemy: {fileID: 0}
-  c_personalDelay: 5
   c_UI: {fileID: 0}
-  c_attackRangeValue: 1
-  c_moveRangeValue: 5
   c_particleComponent: {fileID: 198006011121250746}
-  c_personalDamageValue: 20
   c_enemyDamageTag: EnemyTeam
 --- !u!114 &114305184318445800
 MonoBehaviour:
@@ -778,8 +774,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_UI: {fileID: 0}
-  c_playerMaxHealth: 100
-  c_playerCurrentHealth: 100
+  playerCurrentHealth: 0
+  c_playerStats:
+    c_playerMaxHealth: 100
+    playerDefence: 0
+    playerStrength: 0
+    playerSpeed: 0
+    playerMoveRange: 0
+    playerAttackRange: 0
   c_healthBar: {fileID: 114656391758943202}
 --- !u!136 &136526170815374568
 CapsuleCollider:
@@ -4202,14 +4204,14 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1770559704102238}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 1.6}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 224284196723507750}
   m_Father: {fileID: 4151162402048146}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -0.4, y: 77.4}

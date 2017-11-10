@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIControl: MonoBehaviour
 {
@@ -95,6 +96,15 @@ public class UIControl: MonoBehaviour
 		StartCoroutine (TransitionCamera (l_charToFloat.transform.position));
 		//c_main.transform.position = Vector3.MoveTowards(transform.position, l_charToFloat.transform.position + c_cameraPositionOffset, 150f);
 		c_main.transform.rotation = Quaternion.Euler(c_cameraRotation);
+	}
+
+	public void GameOver(string whoWon){
+		UpdateBattleDialogue (whoWon);
+		Invoke ("ReturnToMainMenu", 5f);
+	}
+
+	private void ReturnToMainMenu(){
+		Application.Quit ();
 	}
 
 	private IEnumerator TransitionCamera(Vector3 l_charToFloat){
