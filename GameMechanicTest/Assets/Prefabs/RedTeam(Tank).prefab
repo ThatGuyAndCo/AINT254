@@ -776,8 +776,8 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   playerCurrentHealth: 0
   c_playerStats:
-    c_playerMaxHealth: 70
-    playerDefence: 8
+    c_playerMaxHealth: 450
+    playerDefence: 6
     playerStrength: 4
     playerSpeed: 4
     playerMoveRange: 3

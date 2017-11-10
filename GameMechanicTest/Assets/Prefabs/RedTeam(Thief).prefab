@@ -749,11 +749,11 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   playerCurrentHealth: 0
   c_playerStats:
-    c_playerMaxHealth: 40
+    c_playerMaxHealth: 450
     playerDefence: 2
     playerStrength: 4
-    playerSpeed: 9
-    playerMoveRange: 5
+    playerSpeed: 10
+    playerMoveRange: 6
     playerAttackRange: 2
   c_healthBar: {fileID: 114188141345876096}
 --- !u!114 &114757542171820252

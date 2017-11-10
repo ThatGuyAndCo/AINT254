@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Random = UnityEngine.Random;
 
 [Serializable]
 public class st_playerStats
@@ -50,9 +51,9 @@ public class PlayerHealth : MonoBehaviour
 				GridTest.s_playerCharacters.Remove (gameObject);
 
 			if (GridTest.s_enemyCharacters.Count == 0) {
-				c_UI.GameOver ("BlueTeamWin");
+				c_UI.GameOver ("Blue Team Win");
 			} else if (GridTest.s_playerCharacters.Count == 0) {
-				c_UI.GameOver ("RedTeamWin");
+				c_UI.GameOver ("Red Team Win");
 			}
 		}
 	}
@@ -67,9 +68,21 @@ public class PlayerHealth : MonoBehaviour
 		c_playerDefend = false;
 	}
 
+	private int DamageCalculator(int l_baseDamage){
+		int returnDamage = 0;
+		returnDamage = l_baseDamage * (1/c_playerStats.playerDefence) + (l_baseDamage/c_playerStats.playerDefence);
+
+		if (Random.Range (0, 100) < c_playerStats.playerSpeed) {
+			returnDamage = 0;
+		}
+
+		return returnDamage;
+	}
+
 	public void TakeDamage(BattleDialogue l_takeDamage)
 	{
-		l_takeDamage.c_damage -= (int)Mathf.Min (l_takeDamage.c_damage * 0.3f, (float)(l_takeDamage.c_damage * (1 / c_playerStats.playerDefence)));
+		Debug.Log ("Base = " + l_takeDamage.c_damage + ", 30% = " + l_takeDamage.c_damage * 0.3f + ", defence calc = " + DamageCalculator(l_takeDamage.c_damage));
+		l_takeDamage.c_damage = (int)Mathf.Max (l_takeDamage.c_damage * 0.3f, (float)(l_takeDamage.c_damage * DamageCalculator(l_takeDamage.c_damage)));
 		if (c_playerDefend) {
 			l_takeDamage.c_damage /= 2;
 		}

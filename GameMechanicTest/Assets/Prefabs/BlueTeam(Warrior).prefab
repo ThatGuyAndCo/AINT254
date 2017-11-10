@@ -722,7 +722,7 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   playerCurrentHealth: 0
   c_playerStats:
-    c_playerMaxHealth: 70
+    c_playerMaxHealth: 900
     playerDefence: 4
     playerStrength: 5
     playerSpeed: 5

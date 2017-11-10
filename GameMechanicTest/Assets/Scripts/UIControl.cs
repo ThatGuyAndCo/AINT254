@@ -104,7 +104,7 @@ public class UIControl: MonoBehaviour
 	}
 
 	private void ReturnToMainMenu(){
-		Application.Quit ();
+		SceneManager.LoadScene (0);
 	}
 
 	private IEnumerator TransitionCamera(Vector3 l_charToFloat){

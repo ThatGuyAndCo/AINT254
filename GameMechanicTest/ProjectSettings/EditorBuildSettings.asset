@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 0ff45eb7710bd1b49a7c57074666e24e
+  - enabled: 1
+    path: Assets/Scenes/TurnBasedCombatMechanicTestingScene.unity
+    guid: a9767bc572e09b34fa0d561dd7ee7693

@@ -116,6 +116,15 @@ public class PlayerAttack : MonoBehaviour {
 		Debug.Log ("" + gameObject.name + "'s turn");
 	}
 
+	public int DamageCalc(int l_baseDamage, float l_skillMult, float l_buffMult){
+		int returnDamage = 0;
+		returnDamage = (int)(((l_baseDamage) * l_skillMult) * l_buffMult);
+		if (Random.Range (0, 85) < c_playerHealthScript.c_playerStats.playerSpeed) {
+			returnDamage *= c_playerHealthScript.c_playerStats.playerSpeed;
+		}
+		return returnDamage;
+	}
+
 	public void MyAttack(){
 		if (!c_setupAttack && !c_attacked) {
 			c_setupAttack = true;
@@ -151,7 +160,7 @@ public class PlayerAttack : MonoBehaviour {
 		else if (c_enemy != null && !c_attacked) 
 		{
 			c_playerHealthScript.CancelDefend ();
-			BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, c_personalDamageValue);
+			BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, DamageCalc(c_personalDamageValue, 1, 1));
 			c_enemyHealthScript.TakeDamage (l_sendDamage);
 			c_myTurnObject.c_delayValue += c_personalDelay;
 			c_attacked = true;
