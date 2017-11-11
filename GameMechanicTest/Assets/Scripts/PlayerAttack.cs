@@ -120,7 +120,7 @@ public class PlayerAttack : MonoBehaviour {
 		int returnDamage = 0;
 		returnDamage = (int)(((l_baseDamage) * l_skillMult) * l_buffMult);
 		if (Random.Range (0, 85) < c_playerHealthScript.c_playerStats.playerSpeed) {
-			returnDamage *= c_playerHealthScript.c_playerStats.playerSpeed;
+			returnDamage *= (c_playerHealthScript.c_playerStats.playerSpeed / 3);
 		}
 		return returnDamage;
 	}
@@ -247,7 +247,7 @@ public class PlayerAttack : MonoBehaviour {
 					RaycastHit hitInfo = new RaycastHit ();
 					bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
 					if (hit) {
-						if (hitInfo.transform.gameObject.tag == "MoveCube" && l_listInRange.Contains (hitInfo.collider.gameObject)) {
+                        if (hitInfo.transform.gameObject.tag == "MoveCube" && l_listInRange.Contains(hitInfo.collider.gameObject) && hitInfo.collider.GetComponent<AddGridToRange>().GetEnemyOnTile("") == null) {
 							l_movePos = hitInfo.transform.position;
 							c_UI.UpdateBattleDialogue ("Moving...");
 							Debug.Log ("Selected movement square");
