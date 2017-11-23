@@ -653,10 +653,10 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   playerCurrentHealth: 0
   c_playerStats:
-    c_playerMaxHealth: 600
-    playerDefence: 2
-    playerStrength: 3
-    playerSpeed: 15
+    c_playerMaxHealth: 130
+    playerDefence: 67
+    playerStrength: 117
+    playerSpeed: 7
     playerMoveRange: 5
     playerAttackRange: 2
   c_healthBar: {fileID: 114695521872606568}
@@ -735,6 +735,7 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   c_particleComponent: {fileID: 198845328700728096}
   c_enemyDamageTag: EnemyTeam
+  c_power: 50
 --- !u!114 &114695521872606568
 MonoBehaviour:
   m_ObjectHideFlags: 1

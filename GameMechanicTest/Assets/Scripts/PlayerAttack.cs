@@ -43,7 +43,10 @@ public class PlayerAttack : MonoBehaviour {
 	[SerializeField]
 	private string c_enemyDamageTag;
 
-	private bool resetMove;
+	[SerializeField]
+	private int c_power;
+
+	private bool c_resetMove;
 
 	// Use this for initialization
 	void Start () {
@@ -67,8 +70,8 @@ public class PlayerAttack : MonoBehaviour {
 		c_enemiesInAttackRange = new List<GameObject> ();
 		c_attacked = false;
 		c_setupAttack = false;
-		resetMove = false;
-		c_personalDamageValue = c_playerHealthScript.c_playerStats.playerStrength * 3;
+		c_resetMove = false;
+		c_personalDamageValue = 40;
 		if(!c_myTurn)
 			c_particleComponent.Stop();
 	}
@@ -90,9 +93,9 @@ public class PlayerAttack : MonoBehaviour {
 			if(c_currentlyMoving == "Finished Moving")
 			{
 				c_UI.DynamicHide (true);
-				if (Input.GetKeyDown (KeyCode.Backspace) || resetMove) 
+				if (Input.GetKeyDown (KeyCode.Backspace) || c_resetMove) 
 				{
-					resetMove = false;
+					c_resetMove = false;
 					transform.position = c_saveStartPosition;
 					c_currentlyMoving = "Restart Move";
 					c_UI.UpdateUIMoved (false);
@@ -102,7 +105,7 @@ public class PlayerAttack : MonoBehaviour {
 	}
 
 	public void ResetMovement(){
-		resetMove = true;
+		c_resetMove = true;
 	}
 
 	public void Attack(){ //Called to start player turn
@@ -116,11 +119,12 @@ public class PlayerAttack : MonoBehaviour {
 		Debug.Log ("" + gameObject.name + "'s turn");
 	}
 
-	public int DamageCalc(int l_baseDamage, float l_skillMult, float l_buffMult){
+	public int DamageCalc(int l_baseDamage, float l_skillMult, float l_buffMult){ //Based off the Pokemon damage calculation
 		int returnDamage = 0;
-		returnDamage = (int)(((l_baseDamage) * l_skillMult) * l_buffMult);
+		returnDamage = (int)(((((((c_power * 2.0f) / 5.0f) + 2.0f) * (l_baseDamage * l_skillMult) * ((float)c_playerHealthScript.c_playerStats.playerStrength / c_enemyHealthScript.GetDefence())) / 50.0f) + 2.0f) * l_buffMult);
 		if (Random.Range (0, 85) < c_playerHealthScript.c_playerStats.playerSpeed) {
-			returnDamage *= (c_playerHealthScript.c_playerStats.playerSpeed / 3);
+			returnDamage = (int)( returnDamage * Mathf.Max(2.5f, (c_playerHealthScript.c_playerStats.playerSpeed / 3.0f)));
+			c_UI.CreateFloatingText ("Crit!", Color.red, c_enemy);
 		}
 		return returnDamage;
 	}
@@ -144,8 +148,8 @@ public class PlayerAttack : MonoBehaviour {
 			}
 			if (c_enemiesInAttackRange.Count != 0) {
 				c_UI.UpdateBattleDialogue ("Please select a target.");
-				foreach (GameObject enemy in c_enemiesInAttackRange)
-					Debug.Log (enemy.name);
+				//foreach (GameObject enemy in c_enemiesInAttackRange)
+					//Debug.Log (enemy.name);
 				c_UI.DynamicHide (false);
 				StartCoroutine (SearchForTile (c_squaresInAttackRange));
 			} else {
@@ -213,9 +217,9 @@ public class PlayerAttack : MonoBehaviour {
 			c_UI.DynamicHide (false);
 			c_UI.UpdateBattleDialogue ("Select position to move to with left click, cancel with right click.");
 			c_squaresInMoveRange.Clear ();
-			Debug.Log ("Calling CheckRange");
+			//Debug.Log ("Calling CheckRange");
 			c_squaresInMoveRange = CheckRange (c_playerHealthScript.c_playerStats.playerMoveRange, "MoveCube");
-			Debug.Log ("Finished CheckRange");
+			//Debug.Log ("Finished CheckRange");
 			StartCoroutine (SearchForTile(c_squaresInMoveRange));
 		} 
 		else 
@@ -227,7 +231,7 @@ public class PlayerAttack : MonoBehaviour {
 	public void ClearTileColourInGrid(List<GameObject> l_tilesInRange){
 		foreach (GameObject tile in l_tilesInRange) {
 			tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.white);
-			Debug.Log ("Trying to change colour of tiles");
+			//Debug.Log ("Trying to change colour of tiles");
 		}
 	}
 
@@ -235,7 +239,7 @@ public class PlayerAttack : MonoBehaviour {
 		while (c_checkForMove) {
 			RaycastHit l_hoverInfo = new RaycastHit ();
 			if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out l_hoverInfo)) {
-				Debug.Log (l_hoverInfo.collider.gameObject.name);
+				//Debug.Log (l_hoverInfo.collider.gameObject.name);
 				foreach (GameObject tile in l_listInRange) {
 					tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.yellow);
 				}
@@ -250,7 +254,7 @@ public class PlayerAttack : MonoBehaviour {
                         if (hitInfo.transform.gameObject.tag == "MoveCube" && l_listInRange.Contains(hitInfo.collider.gameObject) && hitInfo.collider.GetComponent<AddGridToRange>().GetEnemyOnTile("") == null) {
 							l_movePos = hitInfo.transform.position;
 							c_UI.UpdateBattleDialogue ("Moving...");
-							Debug.Log ("Selected movement square");
+							//Debug.Log ("Selected movement square");
 							ClearTileColourInGrid (c_squaresInMoveRange);
 							MyMove (l_movePos);
 							c_checkForMove = false;
@@ -280,7 +284,7 @@ public class PlayerAttack : MonoBehaviour {
 						if (hitInfo.transform.gameObject.tag == c_enemyDamageTag && c_enemiesInAttackRange.Contains (hitInfo.collider.gameObject)) {
 							c_enemy = hitInfo.transform.gameObject;
 							c_UI.UpdateBattleDialogue ("" + gameObject.name + " is now targeting " + c_enemy.name + ".");
-							Debug.Log ("Selected new enemy");
+							//Debug.Log ("Selected new enemy");
 							c_enemyHealthScript = c_enemy.GetComponent<PlayerHealth> ();
 							MyAttack ();
 						}
@@ -295,7 +299,7 @@ public class PlayerAttack : MonoBehaviour {
 			}
 			yield return null;
 		}
-		Debug.Log ("Finishing SearchForTile");
+		//Debug.Log ("Finishing SearchForTile");
 		StopCoroutine ("SearchForTile");
 	}
 

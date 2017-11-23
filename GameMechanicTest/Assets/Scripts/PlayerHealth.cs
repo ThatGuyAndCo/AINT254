@@ -50,16 +50,13 @@ public class PlayerHealth : MonoBehaviour
 			else
 				GridTest.s_playerCharacters.Remove (gameObject);
 
-			if (GridTest.s_enemyCharacters.Count == 0) {
-				c_UI.GameOver ("Blue Team Win");
-			} else if (GridTest.s_playerCharacters.Count == 0) {
-				c_UI.GameOver ("Red Team Win");
-			}
+
 		}
 	}
 
 	public void Defend()
 	{
+		c_UI.CreateFloatingText ("Defend", Color.red, gameObject);
 		c_playerDefend = true;
 	}
 
@@ -69,11 +66,11 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 	private int DamageCalculator(int l_baseDamage){
-		int returnDamage = 0;
-		returnDamage = l_baseDamage * (1/c_playerStats.playerDefence) + (l_baseDamage/c_playerStats.playerDefence);
+		int returnDamage = l_baseDamage;
 
 		if (Random.Range (0, 100) < c_playerStats.playerSpeed) {
 			returnDamage = 0;
+			c_UI.CreateFloatingText ("Miss", Color.green, gameObject);
 		}
 
 		return returnDamage;
@@ -82,7 +79,7 @@ public class PlayerHealth : MonoBehaviour
 	public void TakeDamage(BattleDialogue l_takeDamage)
 	{
 		Debug.Log ("Base = " + l_takeDamage.c_damage + ", 30% = " + l_takeDamage.c_damage * 0.3f + ", defence calc = " + DamageCalculator(l_takeDamage.c_damage));
-		l_takeDamage.c_damage = (int)Mathf.Max (l_takeDamage.c_damage * 0.3f, (float)(l_takeDamage.c_damage * DamageCalculator(l_takeDamage.c_damage)));
+		l_takeDamage.c_damage = (int)Mathf.Max (l_takeDamage.c_damage * 0.3f, (float)(DamageCalculator(l_takeDamage.c_damage)));
 		if (c_playerDefend) {
 			l_takeDamage.c_damage /= 2;
 		}
@@ -95,6 +92,15 @@ public class PlayerHealth : MonoBehaviour
 	void OnDestroy()
 	{
 		gameObject.GetComponent<PlayerAttack> ().DeathDelay ();
+		if (GridTest.s_enemyCharacters.Count == 0) {
+			c_UI.GameOver ("Blue Team Win");
+		} else if (GridTest.s_playerCharacters.Count == 0) {
+			c_UI.GameOver ("Red Team Win");
+		}
+	}
+
+	public int GetDefence(){
+		return c_playerStats.playerDefence;
 	}
 }
 
