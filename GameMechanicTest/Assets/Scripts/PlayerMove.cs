@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : AbstractMove {
-
+public class PlayerMove {
+	/*
 	private Vector3[] c_pathToFollow;
 
 	private int[] c_myGridPos;
@@ -255,5 +255,6 @@ public class PlayerMove : AbstractMove {
 		Debug.Log ("Finished Moving");
 		return "Finished Moving";
 	}
-
+*/
 }
+
