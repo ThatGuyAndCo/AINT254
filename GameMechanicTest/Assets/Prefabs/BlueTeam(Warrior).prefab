@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 95340048694563106}
   - component: {fileID: 114357205656558326}
   - component: {fileID: 114101069624017260}
-  - component: {fileID: 114992041467233090}
   - component: {fileID: 136587836220731158}
+  - component: {fileID: 114875030038134502}
   m_Layer: 8
   m_Name: BlueTeam(Warrior)
   m_TagString: PlayerTeam
@@ -773,7 +773,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114992041467233090
+--- !u!114 &114875030038134502
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -781,7 +781,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1119057790187296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1120cdd86bb8b79418bdd150cdbf2627, type: 3}
+  m_Script: {fileID: 11500000, guid: 91bc91607d8c1c4458c5dd13749a0f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &136587836220731158

@@ -39,8 +39,8 @@ GameObject:
   - component: {fileID: 95780177123154082}
   - component: {fileID: 114641669154460178}
   - component: {fileID: 114995193154290132}
-  - component: {fileID: 114483690558885372}
   - component: {fileID: 136421429772005314}
+  - component: {fileID: 114314941388843050}
   m_Layer: 8
   m_Name: BlueTeam(Mage)
   m_TagString: PlayerTeam
@@ -687,6 +687,17 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114314941388843050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1201733353254902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91bc91607d8c1c4458c5dd13749a0f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114412981442516520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -757,17 +768,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114483690558885372
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1201733353254902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1120cdd86bb8b79418bdd150cdbf2627, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114641669154460178
 MonoBehaviour:
   m_ObjectHideFlags: 1

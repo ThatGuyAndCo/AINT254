@@ -207,8 +207,8 @@ GameObject:
   - component: {fileID: 95833221672039752}
   - component: {fileID: 114194195199466918}
   - component: {fileID: 114765036199679346}
-  - component: {fileID: 114092210310054224}
   - component: {fileID: 136916046513676156}
+  - component: {fileID: 114443676522353040}
   m_Layer: 9
   m_Name: RedTeam(Mage)
   m_TagString: EnemyTeam
@@ -666,17 +666,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114092210310054224
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1683232753246204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1120cdd86bb8b79418bdd150cdbf2627, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114123961189910850
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -773,6 +762,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114443676522353040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1683232753246204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91bc91607d8c1c4458c5dd13749a0f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114642997910706452
 MonoBehaviour:
   m_ObjectHideFlags: 1

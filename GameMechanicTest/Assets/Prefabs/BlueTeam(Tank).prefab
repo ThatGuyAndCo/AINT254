@@ -207,8 +207,8 @@ GameObject:
   - component: {fileID: 95107996687228660}
   - component: {fileID: 114019056312344488}
   - component: {fileID: 114469928683355882}
-  - component: {fileID: 114425058855412288}
   - component: {fileID: 136967316587440738}
+  - component: {fileID: 114370157083523972}
   m_Layer: 8
   m_Name: BlueTeam(Tank)
   m_TagString: PlayerTeam
@@ -692,7 +692,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114425058855412288
+--- !u!114 &114370157083523972
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -700,7 +700,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1849840108053242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1120cdd86bb8b79418bdd150cdbf2627, type: 3}
+  m_Script: {fileID: 11500000, guid: 91bc91607d8c1c4458c5dd13749a0f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114469928683355882

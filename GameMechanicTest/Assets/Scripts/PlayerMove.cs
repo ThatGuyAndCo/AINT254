@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove {
+public class PlayerMove: MonoBehaviour {
 	/*
 	private Vector3[] c_pathToFollow;
 

@@ -19,25 +19,49 @@ public class PlayerMoveAStar : MonoBehaviour {
 
 	private List<Node> FindNeighbours(List<Node> l_openList, List<Node> l_closedList, Node l_currentNode){
 		int[] l_startGrid = GridTest.GetArrayPosFromVector (l_currentNode.c_nodePosition);
+		Debug.Log (l_startGrid[0] + ", " + l_startGrid[1] + " is grid pos, current node transform = " + l_currentNode.c_nodePosition);
 		List<Node> l_returnNodes = new List<Node>();
-		Node l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] + 1, l_startGrid [1]];
-		if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-			l_returnNodes.Add (l_tempNode);
+
+		Node l_tempNode = new Node (new Vector3 (0, 0, 0));
+
+		try{
+			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] + 1, l_startGrid [1]];
+			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
+				l_returnNodes.Add (l_tempNode);
+			}
+		}
+		catch{
+			
 		}
 
-		l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] - 1, l_startGrid [1]];
-		if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-			l_returnNodes.Add (l_tempNode);
+		try{
+			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] - 1, l_startGrid [1]];
+			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
+				l_returnNodes.Add (l_tempNode);
+			}
+		}
+		catch{
+
 		}
 
-		l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] + 1];
-		if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-			l_returnNodes.Add (l_tempNode);
+		try{
+			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] + 1];
+			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
+				l_returnNodes.Add (l_tempNode);
+			}
+		}
+		catch{
+
 		}
 
-		l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] - 1];
-		if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-			l_returnNodes.Add (l_tempNode);
+		try{
+			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] - 1];
+			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
+				l_returnNodes.Add (l_tempNode);
+			}
+		}
+		catch{
+
 		}
 
 		return l_returnNodes;
@@ -46,14 +70,19 @@ public class PlayerMoveAStar : MonoBehaviour {
 	private Vector3[] CalculatePath(Vector3 l_startPos, Vector3 l_endPos){
 		List<Node> l_openList = new List<Node>();
 		List<Node> l_closedList = new List<Node>();
-		Node l_endNode = new Node(new Vector3 (0, 0, 0));
+		int[] l_tempGrid = GridTest.GetArrayPosFromVector (l_endPos);
+		Node l_endNode = GridTest.s_gridPosArray [l_tempGrid[0], l_tempGrid[1]];
 		Vector3[] l_returnArray = new Vector3[0];
 		bool l_foundPath = false;
-		Node l_startNode = new Node (l_startPos);
+		l_tempGrid = GridTest.GetArrayPosFromVector (l_startPos);
+		Node l_startNode = GridTest.s_gridPosArray [l_tempGrid[0], l_tempGrid[1]];
 		l_openList.Add (l_startNode);
 
 		while (l_openList.Count > 0) {
-			Node l_nextNode = new Node (new Vector3 (0, 0, 0));
+			Node l_nextNode = new Node(new Vector3(0,0,0));
+			l_nextNode.c_gCost = 5000;
+			l_nextNode.c_fCost = 5000;
+
 
 			foreach (Node n in l_openList) {
 				if (n.c_fCost < l_nextNode.c_fCost)
@@ -66,6 +95,8 @@ public class PlayerMoveAStar : MonoBehaviour {
 			if (l_nextNode.c_nodePosition == l_endPos) {
 				l_foundPath = true;
 				l_endNode = l_nextNode;
+				Debug.Log ("Found path, breaking");
+				Debug.Log ("Node parent = " + l_endNode.c_parentNode.c_nodePosition);
 				break;
 			}
 
@@ -75,11 +106,16 @@ public class PlayerMoveAStar : MonoBehaviour {
 					continue;
 				}
 
+				if (n.c_parentNode == null) {
+					n.c_parentNode = l_nextNode;
+				}
+
 				if (n.c_gCost > n.c_parentNode.c_gCost + 1 || !l_openList.Contains (n)) {
 					n.c_gCost = n.c_parentNode.c_gCost++;
 					n.c_hCost = Mathf.Abs (n.c_nodePosition.x - l_endPos.x) + Mathf.Abs (n.c_nodePosition.z - l_endPos.z);
 					n.c_fCost = n.c_gCost + n.c_hCost;
 					n.c_parentNode = l_nextNode;
+					Debug.Log ("Setting Node parent");
 
 					if (!l_openList.Contains (n)) {
 						l_openList.Add (n);
@@ -88,6 +124,7 @@ public class PlayerMoveAStar : MonoBehaviour {
 			}
 		}
 		if (l_foundPath) {
+			Debug.Log ("Found path, calling backtrack");
 			l_returnArray = CalculateBacktrack(l_startNode, l_endNode);
 		}
 		return l_returnArray;
@@ -97,14 +134,17 @@ public class PlayerMoveAStar : MonoBehaviour {
 		List<Node> l_returnPath = new List<Node> ();
 		Node l_tempNode = l_endNode;
 
+		Debug.Log ("Backtracking");
+
 		while (l_tempNode != l_startNode) {
 			l_returnPath.Add (l_tempNode);
 			l_tempNode = l_tempNode.c_parentNode;
 		}
 		Vector3[] l_finalPath = new Vector3[l_returnPath.Count];
 
-		for (int x = l_returnPath.Count - 1; x < 0; x--) {
+		for (int x = 0; x < l_returnPath.Count; x++) {
 			l_finalPath [x] = l_returnPath [x].c_nodePosition;
+			Debug.Log ("Node: " + l_finalPath[x]);
 		}
 
 		Array.Reverse(l_finalPath);
@@ -139,6 +179,7 @@ public class PlayerMoveAStar : MonoBehaviour {
 
 		while (c_myTrans.position != l_pathToFollow[l_pathToFollow.Length - 1]) 
 		{
+			Debug.Log (l_pathToFollow [l_moveToNextDepth]);
 			while (c_myTrans.position != l_pathToFollow [l_moveToNextDepth]) 
 			{
 				Vector3 dir = (l_pathToFollow [l_moveToNextDepth] - c_myTrans.position).normalized;
@@ -167,9 +208,9 @@ public class PlayerMoveAStar : MonoBehaviour {
 
 public class Node{
 	public Vector3 c_nodePosition;
-	public int c_gCost = int.MaxValue;
-	public float c_hCost = float.MaxValue;
-	public float c_fCost = float.MaxValue;
+	public int c_gCost = 0;
+	public float c_hCost = 0;
+	public float c_fCost = 0;
 	public Node c_parentNode = null;
 
 	public Node(Vector3 l_nodePosition){

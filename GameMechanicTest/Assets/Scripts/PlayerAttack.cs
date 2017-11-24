@@ -12,7 +12,7 @@ public class PlayerAttack : MonoBehaviour {
 	private List<GameObject> c_squaresInAttackRange;
 	private List<GameObject> c_enemiesInAttackRange;
 
-	private PlayerMove c_playerMove;
+	private PlayerMoveAStar c_playerMove;
 
 	public bool c_myTurn;
 
@@ -62,7 +62,7 @@ public class PlayerAttack : MonoBehaviour {
 		}
 		if(c_enemy != null)
 			c_enemyHealthScript = c_enemy.GetComponent<PlayerHealth> ();
-		c_playerMove = GetComponent<PlayerMove> ();
+		c_playerMove = GetComponent<PlayerMoveAStar> ();
 		c_saveStartPosition = transform.position;
 
 		c_squaresInMoveRange = new List<GameObject>();
@@ -138,11 +138,11 @@ public class PlayerAttack : MonoBehaviour {
 				foreach (GameObject tile in c_squaresInAttackRange) {
 					Debug.Log ("Attempting to get character on tile...");
 					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag) != null){
-						Debug.Log (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
+						//Debug.Log (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
 					}
 					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag) != null) {
 						c_enemiesInAttackRange.Add (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
-						Debug.Log ("Added to tile");
+						//Debug.Log ("Added to tile");
 					}
 				}
 			}
@@ -269,7 +269,7 @@ public class PlayerAttack : MonoBehaviour {
 		while (c_setupAttack) {
 			RaycastHit l_hoverInfo = new RaycastHit ();
 			if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out l_hoverInfo)) {
-				Debug.Log (l_hoverInfo.collider.gameObject.name);
+				//Debug.Log (l_hoverInfo.collider.gameObject.name);
 				foreach (GameObject tile in l_listInRange) {
 					tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.yellow);
 				}
