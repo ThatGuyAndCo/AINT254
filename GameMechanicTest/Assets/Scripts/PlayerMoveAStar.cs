@@ -14,11 +14,11 @@ public class PlayerMoveAStar : AbstractMove {
 	}
 
 	/// <summary>
-	/// Calculates the path.
+	/// Uses an A* algorithm to find the shortest path to the node the player selected.
 	/// </summary>
 	/// <returns>The path.</returns>
-	/// <param name="l_startPos">L start position.</param>
-	/// <param name="l_endPos">L end position.</param>
+	/// <param name="l_startPos">The player's start position.</param>
+	/// <param name="l_endPos">The node the player is trying to reach.</param>
 	private Vector3[] CalculatePath(Vector3 l_startPos, Vector3 l_endPos){
 		List<Node> l_openList = new List<Node>();
 		List<Node> l_closedList = new List<Node>();
@@ -77,17 +77,27 @@ public class PlayerMoveAStar : AbstractMove {
 		}
 		if (l_foundPath) {
 			Debug.Log ("Found path, calling backtrack");
-			l_returnArray = CalculateBacktrack(l_startNode, l_endNode);
+			l_returnArray = CalculateBacktrack (l_startNode, l_endNode);
+		}
+		for (int n = 0; n < l_closedList.Count; n++) {
+			l_closedList [n].c_gCost = 0;
+			l_closedList [n].c_fCost = 0;
+			l_closedList [n].c_parentNode = null;
+		}
+		for (int n = 0; n < l_openList.Count; n++) {
+			l_openList [n].c_gCost = 0;
+			l_openList [n].c_fCost = 0;
+			l_openList [n].c_parentNode = null;
 		}
 		return l_returnArray;
 	}
 
 	/// <summary>
-	/// Calculates the backtrack.
+	/// Backtrack's through the parents of the nodes, starting from the end node, to create a list of Vector3's that act as the path.
 	/// </summary>
-	/// <returns>The backtrack.</returns>
-	/// <param name="l_startNode">L start node.</param>
-	/// <param name="l_endNode">L end node.</param>
+	/// <returns>A Vector3 array containing the nodes the CoRoutine needs to follow.</returns>
+	/// <param name="l_startNode">The player's original position.</param>
+	/// <param name="l_endNode">The node the player is trying to reach.</param>
 	private Vector3[] CalculateBacktrack(Node l_startNode, Node l_endNode){
 		List<Node> l_returnPath = new List<Node> ();
 		Node l_tempNode = l_endNode;
@@ -111,10 +121,9 @@ public class PlayerMoveAStar : AbstractMove {
 
 
 	/// <summary>
-	/// Moves to next node co.
+	/// Moves the player character through the nodes in the array.
 	/// </summary>
-	/// <returns>The to next node co.</returns>
-	/// <param name="l_pathToFollow">L path to follow.</param>
+	/// <param name="l_pathToFollow">The path the CoRoutine needs to follow.</param>
 	private IEnumerator MoveToNextNodeCo(Vector3[] l_pathToFollow){
 		int l_moveToNextDepth = 0;
 		Vector3 l_heightOffset = new Vector3 (0, 1, 0);
@@ -137,11 +146,11 @@ public class PlayerMoveAStar : AbstractMove {
 	}
 
 	/// <summary>
-	/// Initiates the move.
+	/// This is an accessor method to reduce the amount of code available publicly and increase encapsulation.
 	/// </summary>
-	/// <returns>The move.</returns>
-	/// <param name="l_startPos">L start position.</param>
-	/// <param name="l_endPos">L end position.</param>
+	/// <returns>A string to indicate the move was successful.</returns>
+	/// <param name="l_startPos">/param>: Player's position in the world.</param>
+	/// <param name="l_endPos">The position the player is trying to reach.</param>
 	public string InitiateMove(Vector3 l_startPos, Vector3 l_endPos)
 	{
 		Vector3[] l_pathToFollow = CalculatePath (l_startPos, l_endPos);

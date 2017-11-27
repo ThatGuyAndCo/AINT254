@@ -39,7 +39,11 @@ public class GridTest : MonoBehaviour {
 	public static List<GameObject> s_playerCharacters = new List<GameObject>(); 
 	public static List<GameObject> s_enemyCharacters = new List<GameObject>(); 
 
-
+	/// <summary>
+	/// Searches the grid array to find a specific vector, then returns that Vector's position in the grid.
+	/// </summary>
+	/// <returns>The array position from vector.</returns>
+	/// <param name="l_myPos">The position to search for.</param>
 	public static int[] GetArrayPosFromVector(Vector3 l_myPos)
 	{
 		int[] l_returnArrayPos = new int[2];
@@ -64,6 +68,11 @@ public class GridTest : MonoBehaviour {
 		return new int[]{ -100, -100 };
 	}
 
+	/// <summary>
+	/// Raycasts for an object on the 'move tile' layer at the specified node position.
+	/// </summary>
+	/// <returns>The tile found at the vector position. If no tile, returns null.</returns>
+	/// <param name="l_node">The position to search for a tile at.</param>
 	public static GameObject GetTileFromVector(Vector3 l_node){
 		//Debug.Log ("Obtained " + l_node + " as test obstruction node");
 		RaycastHit l_hit;
@@ -79,6 +88,9 @@ public class GridTest : MonoBehaviour {
 		return null;
 	}
 
+	/// <summary>
+	/// Initialises the 2D grid array of nodes, the length and width of the column and rows, to be used by pathfinding.
+	/// </summary>
 	void InitialiseList(){
 		s_gridPosArray = new Node[c_columns, c_rows];
 		c_gridPositions.Clear ();
@@ -98,6 +110,9 @@ public class GridTest : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Instantiates the floor and wall tiles based on the rows and columns provided.
+	/// </summary>
 	void BoardSetup(){
 		c_myBoard = new GameObject ("Board").transform;
 		GameObject l_toInstantiate = c_floor;
@@ -117,6 +132,9 @@ public class GridTest : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Instantiates a set number of random characters for the blue (player) and red (enemy) teams at random positions on either side of the map (each team restricted to one side)
+	/// </summary>
 	void BattleSetup(){
 		int l_gridPositionsRemoved = 0;
 		int l_players = Random.Range (c_playerChars.c_min, c_playerChars.c_max);
@@ -151,6 +169,9 @@ public class GridTest : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Starts setting up the game.
+	/// </summary>
 	void Start(){
 		InitialiseList ();
 		BoardSetup ();
