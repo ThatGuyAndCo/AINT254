@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 114499653084605456}
   - component: {fileID: 136973587513560322}
   - component: {fileID: 114221516610992810}
+  - component: {fileID: 114155192781716388}
   m_Layer: 9
   m_Name: RedTeam(Warrior)
   m_TagString: EnemyTeam
@@ -623,6 +624,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114155192781716388
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1206411007582594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2429186545fae4a93d1f2b456bb9be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114221516610992810
 MonoBehaviour:
   m_ObjectHideFlags: 1

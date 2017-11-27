@@ -13,6 +13,7 @@ public class PlayerAttack : MonoBehaviour {
 	private List<GameObject> c_enemiesInAttackRange;
 
 	private PlayerMoveAStar c_playerMove;
+	private PlayerMoveRangeDijkstra c_playerMoveRangeScript;
 
 	public bool c_myTurn;
 
@@ -63,6 +64,7 @@ public class PlayerAttack : MonoBehaviour {
 		if(c_enemy != null)
 			c_enemyHealthScript = c_enemy.GetComponent<PlayerHealth> ();
 		c_playerMove = GetComponent<PlayerMoveAStar> ();
+		c_playerMoveRangeScript = GetComponent<PlayerMoveRangeDijkstra> ();
 		c_saveStartPosition = transform.position;
 
 		c_squaresInMoveRange = new List<GameObject>();
@@ -216,10 +218,7 @@ public class PlayerAttack : MonoBehaviour {
 			c_checkForMove = true;
 			c_UI.DynamicHide (false);
 			c_UI.UpdateBattleDialogue ("Select position to move to with left click, cancel with right click.");
-			c_squaresInMoveRange.Clear ();
-			//Debug.Log ("Calling CheckRange");
-			c_squaresInMoveRange = CheckRange (c_playerHealthScript.c_playerStats.playerMoveRange, "MoveCube");
-			//Debug.Log ("Finished CheckRange");
+			c_squaresInMoveRange = new List<GameObject>(c_playerMoveRangeScript.FindMoveArea (transform.position, c_playerHealthScript.c_playerStats.playerMoveRange));
 			StartCoroutine (SearchForTile(c_squaresInMoveRange));
 		} 
 		else 

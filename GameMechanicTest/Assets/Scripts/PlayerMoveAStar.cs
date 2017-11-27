@@ -3,70 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerMoveAStar : MonoBehaviour {
-
-	private Vector3[] c_pathToFollow;
-
-	private int[] c_myGridPos;
+public class PlayerMoveAStar : AbstractMove {
 
 	private Transform c_myTrans;
-
-	List<Vector3> c_ignoreNodes;
-
+	/// <summary>
+	/// A pointer for the game object's transform is set here to make accessing it later in the Coroutine faster.
+	/// </summary>
 	void Start(){
 		c_myTrans = transform;
 	}
 
-	private List<Node> FindNeighbours(List<Node> l_openList, List<Node> l_closedList, Node l_currentNode){
-		int[] l_startGrid = GridTest.GetArrayPosFromVector (l_currentNode.c_nodePosition);
-		Debug.Log (l_startGrid[0] + ", " + l_startGrid[1] + " is grid pos, current node transform = " + l_currentNode.c_nodePosition);
-		List<Node> l_returnNodes = new List<Node>();
-
-		Node l_tempNode = new Node (new Vector3 (0, 0, 0));
-
-		try{
-			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] + 1, l_startGrid [1]];
-			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-				l_returnNodes.Add (l_tempNode);
-			}
-		}
-		catch{
-			
-		}
-
-		try{
-			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] - 1, l_startGrid [1]];
-			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-				l_returnNodes.Add (l_tempNode);
-			}
-		}
-		catch{
-
-		}
-
-		try{
-			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] + 1];
-			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-				l_returnNodes.Add (l_tempNode);
-			}
-		}
-		catch{
-
-		}
-
-		try{
-			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] - 1];
-			if (!l_openList.Contains (l_tempNode) && !l_closedList.Contains (l_tempNode)) {
-				l_returnNodes.Add (l_tempNode);
-			}
-		}
-		catch{
-
-		}
-
-		return l_returnNodes;
-	}
-
+	/// <summary>
+	/// Calculates the path.
+	/// </summary>
+	/// <returns>The path.</returns>
+	/// <param name="l_startPos">L start position.</param>
+	/// <param name="l_endPos">L end position.</param>
 	private Vector3[] CalculatePath(Vector3 l_startPos, Vector3 l_endPos){
 		List<Node> l_openList = new List<Node>();
 		List<Node> l_closedList = new List<Node>();
@@ -83,10 +35,9 @@ public class PlayerMoveAStar : MonoBehaviour {
 			l_nextNode.c_gCost = 5000;
 			l_nextNode.c_fCost = 5000;
 
-
-			foreach (Node n in l_openList) {
-				if (n.c_fCost < l_nextNode.c_fCost)
-					l_nextNode = n;
+			for (int n = 0; n < l_openList.Count; n++) {
+				if (l_openList[n].c_fCost < l_nextNode.c_fCost)
+					l_nextNode = l_openList[n];
 			}
 
 			l_openList.Remove (l_nextNode);
@@ -101,24 +52,25 @@ public class PlayerMoveAStar : MonoBehaviour {
 			}
 
 			List<Node> l_neighbourNodes = FindNeighbours (l_openList, l_closedList, l_nextNode);
-			foreach (Node n in l_neighbourNodes) {
-				if (IsThereObstruction (n.c_nodePosition) || l_closedList.Contains (n)) {
+
+			for (int n = 0; n < l_neighbourNodes.Count; n++) {
+				if (IsThereObstruction (l_neighbourNodes[n].c_nodePosition) || ListContains(l_closedList, l_neighbourNodes[n])) {
 					continue;
 				}
 
-				if (n.c_parentNode == null) {
-					n.c_parentNode = l_nextNode;
+				if (l_neighbourNodes[n].c_parentNode == null) {
+					l_neighbourNodes[n].c_parentNode = l_nextNode;
 				}
 
-				if (n.c_gCost > n.c_parentNode.c_gCost + 1 || !l_openList.Contains (n)) {
-					n.c_gCost = n.c_parentNode.c_gCost++;
-					n.c_hCost = Mathf.Abs (n.c_nodePosition.x - l_endPos.x) + Mathf.Abs (n.c_nodePosition.z - l_endPos.z);
-					n.c_fCost = n.c_gCost + n.c_hCost;
-					n.c_parentNode = l_nextNode;
+				if (l_neighbourNodes[n].c_gCost > l_neighbourNodes[n].c_parentNode.c_gCost + 1 || !ListContains(l_openList, l_neighbourNodes[n])) {
+					l_neighbourNodes[n].c_gCost = l_neighbourNodes[n].c_parentNode.c_gCost++;
+					l_neighbourNodes[n].c_hCost = Mathf.Abs (l_neighbourNodes[n].c_nodePosition.x - l_endPos.x) + Mathf.Abs (l_neighbourNodes[n].c_nodePosition.z - l_endPos.z);
+					l_neighbourNodes[n].c_fCost = l_neighbourNodes[n].c_gCost + l_neighbourNodes[n].c_hCost;
+					l_neighbourNodes[n].c_parentNode = l_nextNode;
 					Debug.Log ("Setting Node parent");
 
-					if (!l_openList.Contains (n)) {
-						l_openList.Add (n);
+					if (!ListContains(l_openList, l_neighbourNodes[n])) {
+						l_openList.Add (l_neighbourNodes[n]);
 					}
 				}
 			}
@@ -130,6 +82,12 @@ public class PlayerMoveAStar : MonoBehaviour {
 		return l_returnArray;
 	}
 
+	/// <summary>
+	/// Calculates the backtrack.
+	/// </summary>
+	/// <returns>The backtrack.</returns>
+	/// <param name="l_startNode">L start node.</param>
+	/// <param name="l_endNode">L end node.</param>
 	private Vector3[] CalculateBacktrack(Node l_startNode, Node l_endNode){
 		List<Node> l_returnPath = new List<Node> ();
 		Node l_tempNode = l_endNode;
@@ -151,42 +109,25 @@ public class PlayerMoveAStar : MonoBehaviour {
 		return l_finalPath;
 	}
 
-	private bool IsThereObstruction (Vector3 l_node)
-	{
-		//Debug.Log ("Obtained " + l_node + " as test obstruction node");
-		RaycastHit hit;
-		Physics.Raycast (l_node + new Vector3(0, 50, 0), -Vector3.up, out hit, 60f);
-		//Debug.DrawRay (l_node + new Vector3(0, 50, 0), -Vector3.up * 50, Color.blue, 10f);
 
-		if (hit.collider != null && !hit.collider.CompareTag("MoveCube")) {
-			//Debug.Log ("Ray hit: " + hit.collider.gameObject.name);
-			//Debug.Log("Obstruction Found @ " + l_node);
-			return true;
-		}
-
-		if (l_node == new Vector3 (-100, -100, -100)) 
-		{
-			//Debug.Log("Obstruction Found @ " + l_node);
-			return true;
-		}
-
-		//Debug.Log("Obstruction Not Found @ " + l_node);
-		return false;
-	}
-
+	/// <summary>
+	/// Moves to next node co.
+	/// </summary>
+	/// <returns>The to next node co.</returns>
+	/// <param name="l_pathToFollow">L path to follow.</param>
 	private IEnumerator MoveToNextNodeCo(Vector3[] l_pathToFollow){
 		int l_moveToNextDepth = 0;
-
-		while (c_myTrans.position != l_pathToFollow[l_pathToFollow.Length - 1]) 
+		Vector3 l_heightOffset = new Vector3 (0, 1, 0);
+		while (c_myTrans.position != l_pathToFollow[l_pathToFollow.Length - 1] + l_heightOffset) 
 		{
 			Debug.Log (l_pathToFollow [l_moveToNextDepth]);
-			while (c_myTrans.position != l_pathToFollow [l_moveToNextDepth]) 
+			while (c_myTrans.position != (l_pathToFollow [l_moveToNextDepth] + l_heightOffset)) 
 			{
-				Vector3 dir = (l_pathToFollow [l_moveToNextDepth] - c_myTrans.position).normalized;
+				Vector3 dir = ((l_pathToFollow [l_moveToNextDepth] + l_heightOffset) - c_myTrans.position).normalized;
 				c_myTrans.position += dir * 35f * Time.deltaTime;
 
-				if (Mathf.Abs ((l_pathToFollow [l_moveToNextDepth] - c_myTrans.position).magnitude) < 1)
-					c_myTrans.position = l_pathToFollow [l_moveToNextDepth];
+				if (Mathf.Abs (((l_pathToFollow [l_moveToNextDepth] + l_heightOffset) - c_myTrans.position).magnitude) < 1)
+					c_myTrans.position = l_pathToFollow [l_moveToNextDepth] + l_heightOffset;
 
 				yield return null;
 			}
@@ -195,25 +136,18 @@ public class PlayerMoveAStar : MonoBehaviour {
 		StopCoroutine ("MoveToNextNodeCo");
 	}
 
+	/// <summary>
+	/// Initiates the move.
+	/// </summary>
+	/// <returns>The move.</returns>
+	/// <param name="l_startPos">L start position.</param>
+	/// <param name="l_endPos">L end position.</param>
 	public string InitiateMove(Vector3 l_startPos, Vector3 l_endPos)
 	{
-		//Debug.Log ("Called Initiate move");
-		//Debug.Log ("Calling Calc Path");
-		c_pathToFollow = CalculatePath (l_startPos, l_endPos);
-		StartCoroutine(MoveToNextNodeCo(c_pathToFollow));
-		//Debug.Log ("Finished Moving");
+		Vector3[] l_pathToFollow = CalculatePath (l_startPos, l_endPos);
+		StartCoroutine(MoveToNextNodeCo(l_pathToFollow));
 		return "Finished Moving";
 	}
 }
 
-public class Node{
-	public Vector3 c_nodePosition;
-	public int c_gCost = 0;
-	public float c_hCost = 0;
-	public float c_fCost = 0;
-	public Node c_parentNode = null;
 
-	public Node(Vector3 l_nodePosition){
-		c_nodePosition = l_nodePosition;
-	}
-}

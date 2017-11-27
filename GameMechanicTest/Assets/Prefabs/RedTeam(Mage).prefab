@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 114765036199679346}
   - component: {fileID: 136916046513676156}
   - component: {fileID: 114443676522353040}
+  - component: {fileID: 114590337030883444}
   m_Layer: 9
   m_Name: RedTeam(Mage)
   m_TagString: EnemyTeam
@@ -771,6 +772,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91bc91607d8c1c4458c5dd13749a0f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114590337030883444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1683232753246204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2429186545fae4a93d1f2b456bb9be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114642997910706452

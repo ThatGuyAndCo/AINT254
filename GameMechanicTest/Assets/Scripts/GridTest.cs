@@ -64,6 +64,21 @@ public class GridTest : MonoBehaviour {
 		return new int[]{ -100, -100 };
 	}
 
+	public static GameObject GetTileFromVector(Vector3 l_node){
+		//Debug.Log ("Obtained " + l_node + " as test obstruction node");
+		RaycastHit l_hit;
+		int l_moveLayerMask = 1 << 10;
+		Physics.Raycast (l_node + new Vector3(0, 50, 0), -Vector3.up, out l_hit, 60f, l_moveLayerMask);
+		Debug.DrawRay (l_node + new Vector3(0, 50, 0), -Vector3.up * 60, Color.blue, 10f);
+
+		if (l_hit.collider != null && l_hit.collider.CompareTag("MoveCube")) {
+			return l_hit.collider.gameObject;
+		}
+
+		Debug.Log ("GridTest GetTileFromVector returning null");
+		return null;
+	}
+
 	void InitialiseList(){
 		s_gridPosArray = new Node[c_columns, c_rows];
 		c_gridPositions.Clear ();

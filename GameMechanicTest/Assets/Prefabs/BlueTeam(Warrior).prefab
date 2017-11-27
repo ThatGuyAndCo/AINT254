@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114101069624017260}
   - component: {fileID: 136587836220731158}
   - component: {fileID: 114875030038134502}
+  - component: {fileID: 114583198331253032}
   m_Layer: 8
   m_Name: BlueTeam(Warrior)
   m_TagString: PlayerTeam
@@ -746,6 +747,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114583198331253032
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1119057790187296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2429186545fae4a93d1f2b456bb9be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114739476412217204
 MonoBehaviour:
   m_ObjectHideFlags: 1
