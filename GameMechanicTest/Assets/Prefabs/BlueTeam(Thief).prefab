@@ -660,6 +660,7 @@ MonoBehaviour:
     playerSpeed: 7
     playerMoveRange: 5
     playerAttackRange: 2
+    c_power: 0
   c_healthBar: {fileID: 114695521872606568}
 --- !u!114 &114182277512680384
 MonoBehaviour:
@@ -736,7 +737,6 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   c_particleComponent: {fileID: 198845328700728096}
   c_enemyDamageTag: EnemyTeam
-  c_power: 50
 --- !u!114 &114695521872606568
 MonoBehaviour:
   m_ObjectHideFlags: 1

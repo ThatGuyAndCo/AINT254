@@ -89,6 +89,37 @@ public class GridTest : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Helper method to return a list of all game objects with the specified tag within a certain distance of the given transform.
+	/// Used to calc area player can attack in and AOE for skills with AOE.
+	/// </summary>
+	/// <returns>The range.</returns>
+	/// <param name="l_trans">The transform to search around</param> 
+	/// <param name="l_rangeValue">The distance to search.</param>
+	/// <param name="l_tagToCompare">The tag to compare against.</param>
+	public static List<GameObject> CheckRange(Vector3 l_trans, int l_rangeValue, string l_tagToCompare){
+		List<RaycastHit> l_inRange = new List<RaycastHit>();
+		List<GameObject> l_returnList = new List<GameObject> ();
+		for (int z = l_rangeValue; z >= 0; z--) {
+			for (int x = 0; x <= l_rangeValue; x++) {
+				if (x + z == l_rangeValue) {
+					//Debug.DrawRay (transform.position - new Vector3 (x * 10, -1f, (-z - 0.5f) * 10), -(Vector3.forward * ((z * 2) + 1)) * 10, Color.red, 15f);
+					l_inRange.AddRange(Physics.RaycastAll(l_trans - new Vector3 (x * 10, -1f, (-z - 0.5f) * 10), -Vector3.forward, ((z * 2) + 0.5f) * 10));
+					if (x != 0) {
+						//Debug.DrawRay (transform.position - new Vector3 (-x * 10, -1f, (-z - 0.5f) * 10), -(Vector3.forward * ((z * 2) + 1)) * 10, Color.red, 15f);
+						l_inRange.AddRange (Physics.RaycastAll (l_trans - new Vector3 (-x * 10, -1f, (-z - 0.5f) * 10), -Vector3.forward, ((z * 2) + 0.5f) * 10));
+					}
+				}
+			}
+		}
+		for (int h = 0; h < l_inRange.Count; h++) {
+			if(l_inRange[h].collider.CompareTag(l_tagToCompare))
+				l_returnList.Add (l_inRange[h].collider.gameObject);
+		}
+
+		return l_returnList;
+	}
+
+	/// <summary>
 	/// Initialises the 2D grid array of nodes, the length and width of the column and rows, to be used by pathfinding.
 	/// </summary>
 	void InitialiseList(){

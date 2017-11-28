@@ -14,13 +14,13 @@ public class st_playerStats
 	public int playerSpeed;
 	public int playerMoveRange;
 	public int playerAttackRange;
+	public int c_power;
 }
 
 public class PlayerHealth : MonoBehaviour 
 {
 
-	[SerializeField]
-	private UIControl c_UI;
+	public UIControl c_UI;
 
 	[SerializeField]
 	private int playerCurrentHealth;

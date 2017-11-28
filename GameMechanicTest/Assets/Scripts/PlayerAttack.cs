@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public class PlayerAttack : MonoBehaviour {
 
@@ -39,13 +41,13 @@ public class PlayerAttack : MonoBehaviour {
 
 	private bool c_setupAttack;
 
-	private int c_personalDamageValue;
-
 	[SerializeField]
 	private string c_enemyDamageTag;
 
 	[SerializeField]
-	private int c_power;
+	private List<AbstractSkill> c_characterSkills;
+
+	private AbstractSkill c_currentSkill;
 
 	private bool c_resetMove;
 
@@ -73,7 +75,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_attacked = false;
 		c_setupAttack = false;
 		c_resetMove = false;
-		c_personalDamageValue = 40;
+		c_currentSkill = c_characterSkills [0];
 		if(!c_myTurn)
 			c_particleComponent.Stop();
 	}
@@ -121,27 +123,14 @@ public class PlayerAttack : MonoBehaviour {
 		Debug.Log ("" + gameObject.name + "'s turn");
 	}
 
-	public int DamageCalc(int l_baseDamage, float l_skillMult, float l_buffMult){ //Based off the Pokemon damage calculation
-		int returnDamage = 0;
-		returnDamage = (int)(((((((c_power * 2.0f) / 5.0f) + 2.0f) * (l_baseDamage * l_skillMult) * ((float)c_playerHealthScript.c_playerStats.playerStrength / c_enemyHealthScript.GetDefence())) / 50.0f) + 2.0f) * l_buffMult);
-		if (Random.Range (0, 85) < c_playerHealthScript.c_playerStats.playerSpeed) {
-			returnDamage = (int)( returnDamage * Mathf.Max(2.5f, (c_playerHealthScript.c_playerStats.playerSpeed / 3.0f)));
-			c_UI.CreateFloatingText ("Crit!", Color.red, c_enemy);
-		}
-		return returnDamage;
-	}
-
 	public void MyAttack(){
 		if (!c_setupAttack && !c_attacked) {
 			c_setupAttack = true;
 			c_squaresInAttackRange.Clear ();
-			c_squaresInAttackRange = CheckRange (c_playerHealthScript.c_playerStats.playerAttackRange, "MoveCube");
+			c_squaresInAttackRange = GridTest.CheckRange (transform.position, c_playerHealthScript.c_playerStats.playerAttackRange, "MoveCube");
 			if (c_squaresInAttackRange.Count != 0) {
 				foreach (GameObject tile in c_squaresInAttackRange) {
 					Debug.Log ("Attempting to get character on tile...");
-					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag) != null){
-						//Debug.Log (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
-					}
 					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag) != null) {
 						c_enemiesInAttackRange.Add (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
 						//Debug.Log ("Added to tile");
@@ -166,9 +155,7 @@ public class PlayerAttack : MonoBehaviour {
 		else if (c_enemy != null && !c_attacked) 
 		{
 			c_playerHealthScript.CancelDefend ();
-			BattleDialogue l_sendDamage = new BattleDialogue (gameObject.name, DamageCalc(c_personalDamageValue, 1, 1));
-			c_enemyHealthScript.TakeDamage (l_sendDamage);
-			c_myTurnObject.c_delayValue += c_personalDelay;
+			c_myTurnObject.c_delayValue += (int)(c_personalDelay * c_currentSkill.UseSkill (c_enemy.transform.position, c_playerHealthScript, c_enemyDamageTag));
 			c_attacked = true;
 			Debug.Log ("" + gameObject.name + " attacked");
 			c_setupAttack = false;
@@ -187,6 +174,10 @@ public class PlayerAttack : MonoBehaviour {
 		{
 			c_UI.UpdateBattleDialogue ("Please select a new target.");
 		} 
+	}
+
+	public void SetCurrentSkill(int l_skillNum){
+		c_currentSkill = c_characterSkills [l_skillNum];
 	}
 
 	private void DelayClearingSetupTiles(){
@@ -302,28 +293,7 @@ public class PlayerAttack : MonoBehaviour {
 		StopCoroutine ("SearchForTile");
 	}
 
-	public List<GameObject> CheckRange(int rangeValue, string l_tagToCompare){
-		List<RaycastHit> l_inRange = new List<RaycastHit>();
-		List<GameObject> l_returnList = new List<GameObject> ();
-		for (int z = rangeValue; z >= 0; z--) {
-			for (int x = 0; x <= rangeValue; x++) {
-				if (x + z == rangeValue) {
-					//Debug.DrawRay (transform.position - new Vector3 (x * 10, -1f, (-z - 0.5f) * 10), -(Vector3.forward * ((z * 2) + 1)) * 10, Color.red, 15f);
-					l_inRange.AddRange(Physics.RaycastAll(transform.position - new Vector3 (x * 10, -1f, (-z - 0.5f) * 10), -Vector3.forward, ((z * 2) + 0.5f) * 10));
-					if (x != 0) {
-						//Debug.DrawRay (transform.position - new Vector3 (-x * 10, -1f, (-z - 0.5f) * 10), -(Vector3.forward * ((z * 2) + 1)) * 10, Color.red, 15f);
-						l_inRange.AddRange (Physics.RaycastAll (transform.position - new Vector3 (-x * 10, -1f, (-z - 0.5f) * 10), -Vector3.forward, ((z * 2) + 0.5f) * 10));
-					}
-				}
-			}
-		}
-		foreach (RaycastHit hit in l_inRange) {
-			if(hit.collider.CompareTag(l_tagToCompare))
-				l_returnList.Add (hit.collider.gameObject);
-		}
 
-		return l_returnList;
-	}
 
 	public void CancelMove(){
 		c_checkForMove = false;
