@@ -719,7 +719,9 @@ MonoBehaviour:
   c_enemy: {fileID: 0}
   c_UI: {fileID: 0}
   c_particleComponent: {fileID: 198020582563751226}
+  c_teamDamageTag: EnemyTeam
   c_enemyDamageTag: PlayerTeam
+  c_myClass: Thief
 --- !u!114 &114748887106851842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -756,7 +758,7 @@ MonoBehaviour:
     playerSpeed: 8
     playerMoveRange: 6
     playerAttackRange: 2
-    c_power: 0
+    c_power: 50
   c_healthBar: {fileID: 114188141345876096}
 --- !u!114 &114757542171820252
 MonoBehaviour:

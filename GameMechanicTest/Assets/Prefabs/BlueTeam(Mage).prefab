@@ -800,7 +800,7 @@ MonoBehaviour:
     playerSpeed: 3
     playerMoveRange: 2
     playerAttackRange: 4
-    c_power: 0
+    c_power: 50
   c_healthBar: {fileID: 114751758679793240}
 --- !u!114 &114751758679793240
 MonoBehaviour:
@@ -865,7 +865,9 @@ MonoBehaviour:
   c_enemy: {fileID: 0}
   c_UI: {fileID: 0}
   c_particleComponent: {fileID: 198749411168494284}
+  c_teamDamageTag: PlayerTeam
   c_enemyDamageTag: EnemyTeam
+  c_myClass: BlueMage
 --- !u!136 &136421429772005314
 CapsuleCollider:
   m_ObjectHideFlags: 1

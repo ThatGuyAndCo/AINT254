@@ -735,7 +735,7 @@ MonoBehaviour:
     playerSpeed: 2
     playerMoveRange: 2
     playerAttackRange: 4
-    c_power: 0
+    c_power: 50
   c_healthBar: {fileID: 114123961189910850}
 --- !u!114 &114306137707230666
 MonoBehaviour:
@@ -849,7 +849,9 @@ MonoBehaviour:
   c_enemy: {fileID: 0}
   c_UI: {fileID: 0}
   c_particleComponent: {fileID: 198906073027723244}
+  c_teamDamageTag: EnemyTeam
   c_enemyDamageTag: PlayerTeam
+  c_myClass: RedMage
 --- !u!114 &114946471252749318
 MonoBehaviour:
   m_ObjectHideFlags: 1

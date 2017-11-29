@@ -730,7 +730,9 @@ MonoBehaviour:
   c_enemy: {fileID: 0}
   c_UI: {fileID: 0}
   c_particleComponent: {fileID: 198536881594970570}
+  c_teamDamageTag: EnemyTeam
   c_enemyDamageTag: PlayerTeam
+  c_myClass: Warrior
 --- !u!114 &114806159127145982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -751,7 +753,7 @@ MonoBehaviour:
     playerSpeed: 5
     playerMoveRange: 3
     playerAttackRange: 1
-    c_power: 0
+    c_power: 50
   c_healthBar: {fileID: 114323774719469650}
 --- !u!114 &114831265559001808
 MonoBehaviour:

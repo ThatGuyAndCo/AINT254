@@ -677,7 +677,9 @@ MonoBehaviour:
   c_enemy: {fileID: 0}
   c_UI: {fileID: 0}
   c_particleComponent: {fileID: 198516751611223448}
+  c_teamDamageTag: EnemyTeam
   c_enemyDamageTag: PlayerTeam
+  c_myClass: Tank
 --- !u!114 &114760461152036546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -794,7 +796,7 @@ MonoBehaviour:
     playerSpeed: 3
     playerMoveRange: 3
     playerAttackRange: 1
-    c_power: 0
+    c_power: 50
   c_healthBar: {fileID: 114772325831655050}
 --- !u!136 &136455927641797472
 CapsuleCollider:

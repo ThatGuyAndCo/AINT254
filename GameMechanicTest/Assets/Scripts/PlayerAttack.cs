@@ -41,8 +41,12 @@ public class PlayerAttack : MonoBehaviour {
 
 	private bool c_setupAttack;
 
-	[SerializeField]
-	private string c_enemyDamageTag;
+	public string c_teamDamageTag;
+	public string c_enemyDamageTag;
+
+	public string c_myClass;
+
+	private string c_tagForSkillToUse;
 
 	[SerializeField]
 	private List<AbstractSkill> c_characterSkills;
@@ -50,6 +54,9 @@ public class PlayerAttack : MonoBehaviour {
 	private AbstractSkill c_currentSkill;
 
 	private bool c_resetMove;
+
+	private int saveAttackRange;
+
 
 	// Use this for initialization
 	void Start () {
@@ -68,16 +75,97 @@ public class PlayerAttack : MonoBehaviour {
 		c_playerMove = GetComponent<PlayerMoveAStar> ();
 		c_playerMoveRangeScript = GetComponent<PlayerMoveRangeDijkstra> ();
 		c_saveStartPosition = transform.position;
-
 		c_squaresInMoveRange = new List<GameObject>();
 		c_squaresInAttackRange = new List<GameObject> ();
 		c_enemiesInAttackRange = new List<GameObject> ();
 		c_attacked = false;
 		c_setupAttack = false;
 		c_resetMove = false;
-		c_currentSkill = c_characterSkills [0];
+		saveAttackRange = c_playerHealthScript.c_playerStats.playerAttackRange;
+		SetSkill("BasicAttack");
 		if(!c_myTurn)
 			c_particleComponent.Stop();
+	}
+
+	public void SetSkill(string l_skillName){
+		switch(l_skillName){
+		case "BasicAttack":
+			c_currentSkill = new BasicAttack ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = saveAttackRange;
+			c_tagForSkillToUse = c_enemyDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "Warmth":
+			c_currentSkill = new Warmth ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_teamDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "Flare":
+			c_currentSkill = new FlareSkill ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_enemyDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "SoothingRiver":
+			c_currentSkill = new SoothingRiver ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_teamDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "TidalSurge":
+			c_currentSkill = new TidalSurge ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_teamDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "ArmBreaker":
+			c_currentSkill = new ArmBreaker ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_enemyDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "WarCry":
+			c_currentSkill = new WarCry ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_teamDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "Pounce":
+			c_currentSkill = new Pounce ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange ();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_enemyDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "SwiftStrike":
+			c_currentSkill = new SwiftStrike ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_enemyDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "Stalwart":
+			c_currentSkill = new Stalwart ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_enemyDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		case "Crunch":
+			c_currentSkill = new Crunch ();
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
+			c_tagForSkillToUse = c_enemyDamageTag;
+			Debug.Log ("Setting skill to " + l_skillName);
+			break;
+		}
 	}
 	
 	// Update is called once per frame
@@ -88,13 +176,21 @@ public class PlayerAttack : MonoBehaviour {
 			{
 				SetupMove ();
 			}
+			if (Input.GetKeyDown (KeyCode.H)) {
+				c_UI.UpdateBattleDialogue ("Healing skill selected");
+				SetSkill ("HealingAttack");
+			}
+			if (Input.GetKeyDown (KeyCode.B)) {
+				c_UI.UpdateBattleDialogue ("Basic skill selected");
+				SetSkill ("BasicAttack");
+			}
 
 
 //			else if (c_checkForMove && c_currentlyMoving != "Finished Moving" && c_finishedCheckRange == true) 
 //			{
 //				
 //			}
-			if(c_currentlyMoving == "Finished Moving")
+			if(c_currentlyMoving == "Finished Moving" && !c_setupAttack)
 			{
 				c_UI.DynamicHide (true);
 				if (Input.GetKeyDown (KeyCode.Backspace) || c_resetMove) 
@@ -115,6 +211,8 @@ public class PlayerAttack : MonoBehaviour {
 	public void Attack(){ //Called to start player turn
 		c_myTurn = true;
 		c_attacked = false;
+		c_setupAttack = false;
+		c_enemy = null;
 		c_currentlyMoving = "Started Turn";
 		c_UI.DynamicHide (true);
 		c_UI.UpdateActiveCharacter (gameObject);
@@ -126,13 +224,14 @@ public class PlayerAttack : MonoBehaviour {
 	public void MyAttack(){
 		if (!c_setupAttack && !c_attacked) {
 			c_setupAttack = true;
+			c_UI.DynamicHide (false);
 			c_squaresInAttackRange.Clear ();
 			c_squaresInAttackRange = GridTest.CheckRange (transform.position, c_playerHealthScript.c_playerStats.playerAttackRange, "MoveCube");
 			if (c_squaresInAttackRange.Count != 0) {
 				foreach (GameObject tile in c_squaresInAttackRange) {
 					Debug.Log ("Attempting to get character on tile...");
-					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag) != null) {
-						c_enemiesInAttackRange.Add (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_enemyDamageTag));
+					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_tagForSkillToUse) != null) {
+						c_enemiesInAttackRange.Add (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_tagForSkillToUse));
 						//Debug.Log ("Added to tile");
 					}
 				}
@@ -141,11 +240,11 @@ public class PlayerAttack : MonoBehaviour {
 				c_UI.UpdateBattleDialogue ("Please select a target.");
 				//foreach (GameObject enemy in c_enemiesInAttackRange)
 					//Debug.Log (enemy.name);
-				c_UI.DynamicHide (false);
 				StartCoroutine (SearchForTile (c_squaresInAttackRange));
 			} else {
 				c_UI.UpdateBattleDialogue ("There are no targets in range.");
 				c_setupAttack = false;
+				c_UI.DynamicHide (true);
 				foreach (GameObject tile in c_squaresInAttackRange) {
 					tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.red);
 				}
@@ -155,7 +254,7 @@ public class PlayerAttack : MonoBehaviour {
 		else if (c_enemy != null && !c_attacked) 
 		{
 			c_playerHealthScript.CancelDefend ();
-			c_myTurnObject.c_delayValue += (int)(c_personalDelay * c_currentSkill.UseSkill (c_enemy.transform.position, c_playerHealthScript, c_enemyDamageTag));
+			c_myTurnObject.c_delayValue += (int)(c_personalDelay * c_currentSkill.UseSkill (c_enemy.transform.position, c_playerHealthScript, c_tagForSkillToUse));
 			c_attacked = true;
 			Debug.Log ("" + gameObject.name + " attacked");
 			c_setupAttack = false;
@@ -271,7 +370,7 @@ public class PlayerAttack : MonoBehaviour {
 					RaycastHit hitInfo = new RaycastHit ();
 					bool hit = Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out hitInfo);
 					if (hit) {
-						if (hitInfo.transform.gameObject.tag == c_enemyDamageTag && c_enemiesInAttackRange.Contains (hitInfo.collider.gameObject)) {
+						if (hitInfo.transform.gameObject.tag == c_tagForSkillToUse && c_enemiesInAttackRange.Contains (hitInfo.collider.gameObject)) {
 							c_enemy = hitInfo.transform.gameObject;
 							c_UI.UpdateBattleDialogue ("" + gameObject.name + " is now targeting " + c_enemy.name + ".");
 							//Debug.Log ("Selected new enemy");

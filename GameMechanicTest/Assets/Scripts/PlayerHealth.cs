@@ -79,13 +79,31 @@ public class PlayerHealth : MonoBehaviour
 	public void TakeDamage(BattleDialogue l_takeDamage)
 	{
 		Debug.Log ("Base = " + l_takeDamage.c_damage + ", 30% = " + l_takeDamage.c_damage * 0.3f + ", defence calc = " + DamageCalculator(l_takeDamage.c_damage));
-		l_takeDamage.c_damage = (int)Mathf.Max (l_takeDamage.c_damage * 0.3f, (float)(DamageCalculator(l_takeDamage.c_damage)));
-		if (c_playerDefend) {
-			l_takeDamage.c_damage /= 2;
+		if (l_takeDamage.c_damage > -1) {
+			l_takeDamage.c_damage = (int)Mathf.Max (l_takeDamage.c_damage * 0.3f, (float)(DamageCalculator(l_takeDamage.c_damage)));
+			if (c_playerDefend) {
+				l_takeDamage.c_damage /= 2;
+			}
+			c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " dealt " + l_takeDamage.c_damage + " damage to " + gameObject.name + ".");
+			c_UI.CreateFloatingText ("" + l_takeDamage.c_damage, Color.red, gameObject);
+		} else {
+			c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " healed " + l_takeDamage.c_damage + " damage to " + gameObject.name + ".");
+			c_UI.CreateFloatingText ("" + l_takeDamage.c_damage, Color.green, gameObject);
 		}
-		c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " dealt " + l_takeDamage.c_damage + " damage to " + gameObject.name + ".");
-		c_UI.CreateFloatingText ("" + l_takeDamage.c_damage, Color.red, gameObject);
 		playerCurrentHealth -= l_takeDamage.c_damage;
+		c_healthBar.value = ((float)playerCurrentHealth/(float)c_playerStats.c_playerMaxHealth) * 100;
+	}
+
+	public void TakeDamage(float l_damagePercent)
+	{
+		int l_takeDamage = (int)(c_playerStats.c_playerMaxHealth / l_damagePercent);
+		Debug.Log ("Base = " + l_takeDamage + ", 30% = " + l_takeDamage * 0.3f + ", defence calc = " + DamageCalculator(l_takeDamage));
+		l_takeDamage = (int)Mathf.Max (l_takeDamage * 0.3f, (float)(DamageCalculator(l_takeDamage)));
+		if (c_playerDefend) {
+			l_takeDamage /= 2;
+		}
+		c_UI.CreateFloatingText ("" + l_takeDamage, Color.red, gameObject);
+		playerCurrentHealth -= l_takeDamage;
 		c_healthBar.value = ((float)playerCurrentHealth/(float)c_playerStats.c_playerMaxHealth) * 100;
 	}
 
