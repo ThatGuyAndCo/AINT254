@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SwiftStrike : AbstractSkill {
 
-	protected int c_baseDamage = 50;
-	public int c_skillRange = 3;
+	protected int c_baseDamage = 45;
+	protected int c_skillRange = 3;
 	protected int c_AOERange = 0;
-	protected float c_turnDelayModifier = 1.25f;
+	protected float c_turnDelayModifier = 2.4f;
 
 	public override float UseSkill (Vector3 l_target, PlayerHealth l_myStats, string l_targetTeamTag){
 		List<GameObject> l_targets = TargetsInRange(l_target, c_AOERange, l_targetTeamTag);

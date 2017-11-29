@@ -7,7 +7,7 @@ public class Warmth : AbstractSkill {
 	protected int c_baseDamage = -100;
 	public int c_skillRange = 6;
 	protected int c_AOERange = 0;
-	protected float c_turnDelayModifier = 1.3f;
+	protected float c_turnDelayModifier = 1.2f;
 
 	public override float UseSkill (Vector3 l_target, PlayerHealth l_myStats, string l_targetTeamTag){
 		List<GameObject> l_targets = TargetsInRange(l_target, c_AOERange, l_targetTeamTag);

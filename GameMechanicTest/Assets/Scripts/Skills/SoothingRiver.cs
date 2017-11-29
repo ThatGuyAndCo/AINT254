@@ -7,7 +7,7 @@ public class SoothingRiver : AbstractSkill {
 	protected int c_baseDamage = -35;
 	public int c_skillRange = 0;
 	protected int c_AOERange = 6;
-	protected float c_turnDelayModifier = 1.3f;
+	protected float c_turnDelayModifier = 1.25f;
 
 	public override float UseSkill (Vector3 l_target, PlayerHealth l_myStats, string l_targetTeamTag){
 		List<GameObject> l_targets = TargetsInRange(l_target, c_AOERange, l_targetTeamTag);

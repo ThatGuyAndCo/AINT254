@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class FlareSkill : AbstractSkill {
 
-	protected int c_baseDamage = 41;
+	protected int c_baseDamage = 36;
 	public int c_skillRange = 5;
 	protected int c_AOERange = 3;
-	protected float c_turnDelayModifier = 1.5f;
+	protected float c_turnDelayModifier = 1.3f;
 
 	public override float UseSkill (Vector3 l_target, PlayerHealth l_myStats, string l_targetTeamTag){
 		List<GameObject> l_targets = TargetsInRange(l_target, c_AOERange, l_targetTeamTag);

@@ -96,14 +96,12 @@ public class PlayerHealth : MonoBehaviour
 
 	public void TakeDamage(float l_damagePercent)
 	{
-		int l_takeDamage = (int)(c_playerStats.c_playerMaxHealth / l_damagePercent);
-		Debug.Log ("Base = " + l_takeDamage + ", 30% = " + l_takeDamage * 0.3f + ", defence calc = " + DamageCalculator(l_takeDamage));
-		l_takeDamage = (int)Mathf.Max (l_takeDamage * 0.3f, (float)(DamageCalculator(l_takeDamage)));
-		if (c_playerDefend) {
-			l_takeDamage /= 2;
-		}
+		int l_takeDamage = (int)(c_playerStats.c_playerMaxHealth * (0.01f * l_damagePercent));
 		c_UI.CreateFloatingText ("" + l_takeDamage, Color.red, gameObject);
 		playerCurrentHealth -= l_takeDamage;
+		if (playerCurrentHealth <= 0) {
+			TurnOrder.CallNextTurn ();
+		}
 		c_healthBar.value = ((float)playerCurrentHealth/(float)c_playerStats.c_playerMaxHealth) * 100;
 	}
 

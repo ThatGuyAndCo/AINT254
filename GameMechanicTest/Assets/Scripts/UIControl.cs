@@ -71,6 +71,8 @@ public class UIControl: MonoBehaviour
 	}
 
 	public void SetupSkill(){ 
+		c_skillButtons [0].GetComponent<Button> ().onClick.RemoveAllListeners();
+		c_skillButtons [1].GetComponent<Button> ().onClick.RemoveAllListeners();
 		switch (c_playerAttackScript.c_myClass) {
 		case "BlueMage":
 			c_skillButtons [0].GetComponentInChildren<Text> ().text = "Soothing River";

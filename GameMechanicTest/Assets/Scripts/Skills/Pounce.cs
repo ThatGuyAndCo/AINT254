@@ -7,7 +7,7 @@ public class Pounce : AbstractSkill {
 	protected int c_baseDamage = 45;
 	public int c_skillRange = 1;
 	protected int c_AOERange = 0;
-	protected float c_turnDelayModifier = 1.3f;
+	protected float c_turnDelayModifier = 1.7f;
 
 	public override float UseSkill (Vector3 l_target, PlayerHealth l_myStats, string l_targetTeamTag){
 		List<GameObject> l_targets = TargetsInRange(l_target, c_AOERange, l_targetTeamTag);

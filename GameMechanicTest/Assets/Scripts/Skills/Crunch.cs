@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Crunch : AbstractSkill {
 
-	protected int c_baseDamage = 90;
+	protected int c_baseDamage = 80;
 	public int c_skillRange = 1;
 	protected int c_AOERange = 0;
 	protected float c_turnDelayModifier = 1.1f;

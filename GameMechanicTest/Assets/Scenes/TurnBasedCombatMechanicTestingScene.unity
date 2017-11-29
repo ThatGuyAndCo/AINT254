@@ -852,7 +852,6 @@ GameObject:
   - component: {fileID: 978421078}
   - component: {fileID: 978421077}
   - component: {fileID: 978421081}
-  - component: {fileID: 978421082}
   - component: {fileID: 978421083}
   m_Layer: 5
   m_Name: UI_Canvas
@@ -962,17 +961,6 @@ MonoBehaviour:
   c_skillButtons:
   - {fileID: 1668414398}
   - {fileID: 336950162}
---- !u!114 &978421082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 978421076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 949b3d32cf5e929478ac5767b9c15be7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &978421083
 MonoBehaviour:
   m_ObjectHideFlags: 0

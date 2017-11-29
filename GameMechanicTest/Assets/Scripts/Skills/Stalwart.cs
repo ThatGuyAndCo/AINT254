@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Stalwart : AbstractSkill {
 
-	protected int c_baseDamage = 75;
+	protected int c_baseDamage = 65;
 	public int c_skillRange = 1;
 	protected int c_AOERange = 0;
 	protected float c_turnDelayModifier = 1.3f;

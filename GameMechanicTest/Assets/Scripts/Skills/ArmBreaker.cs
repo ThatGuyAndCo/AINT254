@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ArmBreaker : AbstractSkill{
 
-	protected int c_baseDamage = 80;
+	protected int c_baseDamage = 75;
 	public int c_skillRange = 1;
 	protected int c_AOERange = 0;
-	protected float c_turnDelayModifier = 1.2f;
+	protected float c_turnDelayModifier = 1.6f;
 
 	public override float UseSkill (Vector3 l_target, PlayerHealth l_myStats, string l_targetTeamTag){
 		List<GameObject> l_targets = TargetsInRange(l_target, c_AOERange, l_targetTeamTag);
@@ -16,7 +16,7 @@ public class ArmBreaker : AbstractSkill{
 			int l_damageToDeal = CalculateDamage (l_currentTarget, l_myStats, c_baseDamage);
 			ApplyEffectToTarget (l_currentTarget, l_damageToDeal, l_myStats);
 		}
-		l_myStats.TakeDamage (8);
+		l_myStats.TakeDamage (15);
 		return c_turnDelayModifier;
 	}
 

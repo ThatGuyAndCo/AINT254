@@ -222,6 +222,7 @@ public class PlayerAttack : MonoBehaviour {
 	}
 
 	public void MyAttack(){
+		Debug.Log (!c_setupAttack + ", " + !c_attacked);
 		if (!c_setupAttack && !c_attacked) {
 			c_setupAttack = true;
 			c_UI.DynamicHide (false);
@@ -229,7 +230,7 @@ public class PlayerAttack : MonoBehaviour {
 			c_squaresInAttackRange = GridTest.CheckRange (transform.position, c_playerHealthScript.c_playerStats.playerAttackRange, "MoveCube");
 			if (c_squaresInAttackRange.Count != 0) {
 				foreach (GameObject tile in c_squaresInAttackRange) {
-					Debug.Log ("Attempting to get character on tile...");
+					//Debug.Log ("Attempting to get character on tile...");
 					if (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_tagForSkillToUse) != null) {
 						c_enemiesInAttackRange.Add (tile.GetComponent<AddGridToRange> ().GetEnemyOnTile (c_tagForSkillToUse));
 						//Debug.Log ("Added to tile");
@@ -238,8 +239,7 @@ public class PlayerAttack : MonoBehaviour {
 			}
 			if (c_enemiesInAttackRange.Count != 0) {
 				c_UI.UpdateBattleDialogue ("Please select a target.");
-				//foreach (GameObject enemy in c_enemiesInAttackRange)
-					//Debug.Log (enemy.name);
+				Debug.Log (c_playerHealthScript.c_playerStats.playerAttackRange);
 				StartCoroutine (SearchForTile (c_squaresInAttackRange));
 			} else {
 				c_UI.UpdateBattleDialogue ("There are no targets in range.");
@@ -271,7 +271,8 @@ public class PlayerAttack : MonoBehaviour {
 		}
 		else if (c_enemy == null) 
 		{
-			c_UI.UpdateBattleDialogue ("Please select a new target.");
+			Debug.Log ("c_enemy == null statement entered");
+			//c_UI.UpdateBattleDialogue ("Please select a new target.");
 		} 
 	}
 
@@ -388,7 +389,9 @@ public class PlayerAttack : MonoBehaviour {
 			}
 			yield return null;
 		}
-		//Debug.Log ("Finishing SearchForTile");
+
+		Debug.Log ("Setup attack = " + c_setupAttack);
+		Debug.Log ("Finishing SearchForTile");
 		StopCoroutine ("SearchForTile");
 	}
 
@@ -439,7 +442,6 @@ public class PlayerAttack : MonoBehaviour {
 	}
 
 	private void DelayCallNext(){
-		
 		TurnOrder.CallNextTurn ();
 	}
 
