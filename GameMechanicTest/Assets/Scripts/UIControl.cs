@@ -41,6 +41,9 @@ public class UIControl: MonoBehaviour
 	[SerializeField]
 	private GameObject[] c_skillButtons;
 
+	[SerializeField]
+	private Image c_battleLog;
+
 	private FloatingDamageTest c_floatingTextTest;
 
 	void Start(){
@@ -53,6 +56,15 @@ public class UIControl: MonoBehaviour
 		c_playerAttackScript = c_activeCharacter.GetComponent<PlayerAttack> ();
 		c_characterName.text = "" + l_activeCharacter.name + "'s turn";
 		UpdateCamera (l_activeCharacter);
+		if(c_activeCharacter.CompareTag("PlayerTeam")){
+			ChangeBattleLogColour(new Color(0.2f, 0.5f, 0.7f, 0.7f));
+		}else{
+			ChangeBattleLogColour(new Color(0.6f, 0, 0, 0.7f));
+		}
+	}
+
+	private void ChangeBattleLogColour(Color l_teamColour){
+		c_battleLog.color = l_teamColour;
 	}
 
 	public void DynamicHide(bool l_hide){ //true = display, false = hidden

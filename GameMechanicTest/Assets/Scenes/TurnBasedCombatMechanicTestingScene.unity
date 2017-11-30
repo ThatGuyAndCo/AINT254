@@ -961,6 +961,7 @@ MonoBehaviour:
   c_skillButtons:
   - {fileID: 1668414398}
   - {fileID: 336950162}
+  c_battleLog: {fileID: 123692661}
 --- !u!114 &978421083
 MonoBehaviour:
   m_ObjectHideFlags: 0
