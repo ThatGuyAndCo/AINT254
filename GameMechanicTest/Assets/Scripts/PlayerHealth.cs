@@ -41,17 +41,20 @@ public class PlayerHealth : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		if (playerCurrentHealth <= 0) {
-			Destroy (gameObject);
+			c_UI.UpdateBattleDialogue ("" + gameObject.name + " died from recoil.");
+			Invoke ("DelayDeath", 1.7f);
 			if (gameObject.CompareTag ("EnemyTeam"))
 				GridTest.s_enemyCharacters.Remove (gameObject);
 			else
 				GridTest.s_playerCharacters.Remove (gameObject);
-
-
 		}
+	}
+
+	private void DelayDeath (){
+		Destroy (gameObject);
 	}
 
 	public void Defend()
@@ -100,7 +103,7 @@ public class PlayerHealth : MonoBehaviour
 		c_UI.CreateFloatingText ("" + l_takeDamage, Color.red, gameObject);
 		playerCurrentHealth -= l_takeDamage;
 		if (playerCurrentHealth <= 0) {
-			TurnOrder.CallNextTurn ();
+			GetComponent<PlayerAttack> ().EndTurn ();
 		}
 		c_healthBar.value = ((float)playerCurrentHealth/(float)c_playerStats.c_playerMaxHealth) * 100;
 	}

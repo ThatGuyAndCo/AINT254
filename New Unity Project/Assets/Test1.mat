@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Test1
-  m_Shader: {fileID: 4800000, guid: 21c1308d790b43f41bb6bcdbb18bbcd4, type: 3}
+  m_Shader: {fileID: 4800000, guid: 6efec2efc7a40b74884564688bc18ce1, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -92,10 +92,10 @@ Material:
     - c_outlineThickness: 0.4
     - c_shininess: 0.837
     m_Colors:
-    - _Color: {r: 0.58823526, g: 0.47488368, b: 0.17733562, a: 1}
+    - _Color: {r: 0.9485294, g: 0.5230861, b: 0.5230861, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnlitColor: {r: 0, g: 0, b: 0, a: 1}
+    - _UnlitColor: {r: 0.52205884, g: 0.13051471, b: 0.13051471, a: 1}
     - c_colour: {r: 0.52205884, g: 0.5335748, b: 0.5335748, a: 1}
     - c_specColour: {r: 1, g: 1, b: 1, a: 1}
     - c_unlitColour: {r: 0, g: 0, b: 0, a: 1}

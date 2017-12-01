@@ -16,7 +16,7 @@ public class SwiftStrike : AbstractSkill {
 			int l_damageToDeal = CalculateDamage (l_currentTarget, l_myStats, c_baseDamage);
 			ApplyEffectToTarget (l_currentTarget, l_damageToDeal, l_myStats);
 		}
-		l_myStats.TakeDamage (20);
+		l_myStats.TakeDamage (16);
 		return c_turnDelayModifier;
 	}
 

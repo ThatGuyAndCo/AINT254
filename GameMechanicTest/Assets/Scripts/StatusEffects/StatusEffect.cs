@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusEffect {
+public interface StatusEffect {
 
-	public int c_counter;
+	void Tick ();
 
-	protected virtual void Tick();
+	void ApplyEffect ();
 
-	protected virtual void ApplyEffect ();
+	void RemoveEffect ();
 
-	protected virtual void RemoveEffect ();
-
-	protected virtual void ResetCounter ();
+	void ResetCounter ();
 }
