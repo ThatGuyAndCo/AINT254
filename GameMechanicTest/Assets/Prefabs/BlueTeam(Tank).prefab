@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 136967316587440738}
   - component: {fileID: 114370157083523972}
   - component: {fileID: 114530641809291286}
+  - component: {fileID: 54269931175327044}
   m_Layer: 8
   m_Name: BlueTeam(Tank)
   m_TagString: PlayerTeam
@@ -580,6 +581,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1598909431182902}
   m_Mesh: {fileID: 4300006, guid: 49acf0d5bf0392b43a31551aa1eaaa4e, type: 3}
+--- !u!54 &54269931175327044
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849840108053242}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!95 &95107996687228660
 Animator:
   serializedVersion: 3
@@ -611,6 +627,14 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   playerCurrentHealth: 0
   c_playerStats:
+    c_playerMaxHealth: 167
+    playerDefence: 110
+    playerStrength: 78
+    playerSpeed: 3
+    playerMoveRange: 3
+    playerAttackRange: 1
+    c_power: 50
+  c_unmodifiedStats:
     c_playerMaxHealth: 167
     playerDefence: 110
     playerStrength: 78

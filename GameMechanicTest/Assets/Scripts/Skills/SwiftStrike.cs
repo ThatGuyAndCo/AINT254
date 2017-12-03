@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwiftStrike : AbstractSkill {
 
-	protected int c_baseDamage = 45;
+	protected int c_baseDamage = 25;
 	protected int c_skillRange = 3;
 	protected int c_AOERange = 0;
 	protected float c_turnDelayModifier = 2.4f;
@@ -16,9 +16,16 @@ public class SwiftStrike : AbstractSkill {
 			int l_damageToDeal = CalculateDamage (l_currentTarget, l_myStats, c_baseDamage);
 			ApplyEffectToTarget (l_currentTarget, l_damageToDeal, l_myStats);
 		}
-		l_myStats.TakeDamage (16);
+		l_myStats.TakeDamage (20);
 		return c_turnDelayModifier;
 	}
+
+	protected override void ApplyEffectToTarget(PlayerHealth l_enemy, int l_damageToDeal, PlayerHealth l_instigator){
+		BattleDialogue l_sendDamage = new BattleDialogue (l_instigator.name, l_damageToDeal);
+		l_enemy.TakeDamage (l_sendDamage);
+		ContinuedEffect l_temp = new HPRegen (10, 2, l_enemy);
+	}
+
 
 	protected override int CalculateDamage(PlayerHealth l_enemy, PlayerHealth l_instigator, int l_baseDamage){
 		int returnDamage = 0;

@@ -20,6 +20,12 @@ public class ArmBreaker : AbstractSkill{
 		return c_turnDelayModifier;
 	}
 
+	protected override void ApplyEffectToTarget(PlayerHealth l_enemy, int l_damageToDeal, PlayerHealth l_instigator){
+		BattleDialogue l_sendDamage = new BattleDialogue (l_instigator.name, l_damageToDeal);
+		l_enemy.TakeDamage (l_sendDamage);
+		IStatusEffect l_temp = new ModAttack (-25, 3, l_enemy);
+	}
+
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}

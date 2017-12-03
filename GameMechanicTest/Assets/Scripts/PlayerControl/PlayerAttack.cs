@@ -155,7 +155,7 @@ public class PlayerAttack : MonoBehaviour {
 			c_currentSkill = new Stalwart ();
 			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
 			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
-			c_tagForSkillToUse = c_enemyDamageTag;
+			c_tagForSkillToUse = c_teamDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "Crunch":
@@ -218,6 +218,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_UI.UpdateActiveCharacter (gameObject);
 		c_saveStartPosition = transform.position;
 		c_particleComponent.Play();
+		c_playerHealthScript.CheckStatusEff ();
 		Debug.Log ("" + gameObject.name + "'s turn");
 	}
 

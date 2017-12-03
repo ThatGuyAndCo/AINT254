@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 136916046513676156}
   - component: {fileID: 114443676522353040}
   - component: {fileID: 114590337030883444}
+  - component: {fileID: 54368595808523006}
   m_Layer: 9
   m_Name: RedTeam(Mage)
   m_TagString: EnemyTeam
@@ -650,6 +651,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1686502868960148}
   m_Mesh: {fileID: 4300012, guid: 49acf0d5bf0392b43a31551aa1eaaa4e, type: 3}
+--- !u!54 &54368595808523006
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1683232753246204}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!95 &95833221672039752
 Animator:
   serializedVersion: 3
@@ -729,6 +745,14 @@ MonoBehaviour:
   c_UI: {fileID: 0}
   playerCurrentHealth: 0
   c_playerStats:
+    c_playerMaxHealth: 130
+    playerDefence: 66
+    playerStrength: 235
+    playerSpeed: 2
+    playerMoveRange: 2
+    playerAttackRange: 4
+    c_power: 50
+  c_unmodifiedStats:
     c_playerMaxHealth: 130
     playerDefence: 66
     playerStrength: 235

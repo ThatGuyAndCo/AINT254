@@ -26,11 +26,16 @@ public class PlayerHealth : MonoBehaviour
 	private int playerCurrentHealth;
 
 	public st_playerStats c_playerStats;
+	public st_playerStats c_unmodifiedStats;
 
 	private bool c_playerDefend = false;
 
 	[SerializeField]
 	private Slider c_healthBar;
+
+	public List<IStatusEffect> c_statusEff;
+
+	private bool c_invokedDeath = false;
 
 	// Use this for initialization
 	void Start () 
@@ -38,18 +43,32 @@ public class PlayerHealth : MonoBehaviour
 		c_UI = GameObject.FindGameObjectWithTag ("UICanvas").GetComponent<UIControl>();
 		playerCurrentHealth = c_playerStats.c_playerMaxHealth;
 		c_healthBar.value = ((float)playerCurrentHealth/(float)c_playerStats.c_playerMaxHealth) * 100;
+		c_statusEff = new List<IStatusEffect> ();
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		if (playerCurrentHealth <= 0) {
-			c_UI.UpdateBattleDialogue ("" + gameObject.name + " died from recoil.");
+		if (playerCurrentHealth <= 0 && !c_invokedDeath) {
 			Invoke ("DelayDeath", 1.7f);
+			c_invokedDeath = true;
 			if (gameObject.CompareTag ("EnemyTeam"))
 				GridTest.s_enemyCharacters.Remove (gameObject);
 			else
 				GridTest.s_playerCharacters.Remove (gameObject);
+		}
+	}
+
+	public void CheckStatusEff(){
+		if (c_statusEff.Count == 0)
+			return;
+		
+		for (int s = 0; s < c_statusEff.Count; s++) {
+			c_statusEff [s].Tick ();
+			if (typeof(ContinuedEffect).IsAssignableFrom(c_statusEff [s].GetType ())) {
+				ContinuedEffect l_temp = (ContinuedEffect)c_statusEff [s];
+				l_temp.ContEffect ();
+			}
 		}
 	}
 
@@ -90,8 +109,11 @@ public class PlayerHealth : MonoBehaviour
 			c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " dealt " + l_takeDamage.c_damage + " damage to " + gameObject.name + ".");
 			c_UI.CreateFloatingText ("" + l_takeDamage.c_damage, Color.red, gameObject);
 		} else {
-			c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " healed " + l_takeDamage.c_damage + " damage to " + gameObject.name + ".");
-			c_UI.CreateFloatingText ("" + l_takeDamage.c_damage, Color.green, gameObject);
+			if (playerCurrentHealth + -l_takeDamage.c_damage > c_playerStats.c_playerMaxHealth) {
+				l_takeDamage.c_damage += (playerCurrentHealth + -l_takeDamage.c_damage) - c_playerStats.c_playerMaxHealth;
+			}
+			c_UI.UpdateBattleDialogue ("" + l_takeDamage.c_attackerName + " healed " + -l_takeDamage.c_damage + " health to " + gameObject.name + ".");
+			c_UI.CreateFloatingText ("" + -l_takeDamage.c_damage, Color.green, gameObject);
 		}
 		playerCurrentHealth -= l_takeDamage.c_damage;
 		c_healthBar.value = ((float)playerCurrentHealth/(float)c_playerStats.c_playerMaxHealth) * 100;
@@ -100,10 +122,20 @@ public class PlayerHealth : MonoBehaviour
 	public void TakeDamage(float l_damagePercent)
 	{
 		int l_takeDamage = (int)(c_playerStats.c_playerMaxHealth * (0.01f * l_damagePercent));
-		c_UI.CreateFloatingText ("" + l_takeDamage, Color.red, gameObject);
-		playerCurrentHealth -= l_takeDamage;
-		if (playerCurrentHealth <= 0) {
-			GetComponent<PlayerAttack> ().EndTurn ();
+		if (l_takeDamage > -1) {
+			c_UI.CreateFloatingText ("" + l_takeDamage, Color.red, gameObject);
+			playerCurrentHealth -= l_takeDamage;
+			if (playerCurrentHealth <= 0) {
+				GetComponent<PlayerAttack> ().EndTurn ();
+				c_UI.UpdateBattleDialogue ("" + gameObject.name + " died from recoil.");
+			}
+		} else {
+			if (playerCurrentHealth + -l_takeDamage > c_playerStats.c_playerMaxHealth) {
+				l_takeDamage += (playerCurrentHealth + -l_takeDamage) - c_playerStats.c_playerMaxHealth;
+			}
+			c_UI.CreateFloatingText ("" + -l_takeDamage, Color.green, gameObject);
+			playerCurrentHealth -= l_takeDamage;
+			c_UI.UpdateBattleDialogue (gameObject.name + " recovered " + -l_takeDamage + " health.");
 		}
 		c_healthBar.value = ((float)playerCurrentHealth/(float)c_playerStats.c_playerMaxHealth) * 100;
 	}

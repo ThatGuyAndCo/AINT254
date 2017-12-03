@@ -44,11 +44,15 @@ public class UIControl: MonoBehaviour
 	[SerializeField]
 	private Image c_battleLog;
 
+	[SerializeField]
+	private GameObject c_cameraContainer;
+
 	private FloatingDamageTest c_floatingTextTest;
 
 	void Start(){
 		c_battleDialogue.text = "";
 		c_floatingTextTest = GetComponent<FloatingDamageTest> ();
+		c_main.transform.SetParent (c_cameraContainer.transform);
 	}
 
 	public void UpdateActiveCharacter(GameObject l_activeCharacter){
@@ -174,9 +178,7 @@ public class UIControl: MonoBehaviour
 	}
 
 	public void UpdateCamera(GameObject l_charToFloat){
-		c_main.transform.SetParent (l_charToFloat.transform);
 		StartCoroutine (TransitionCamera (l_charToFloat.transform.position));
-		//c_main.transform.position = Vector3.MoveTowards(transform.position, l_charToFloat.transform.position + c_cameraPositionOffset, 150f);
 		c_main.transform.rotation = Quaternion.Euler(c_cameraRotation);
 	}
 
@@ -191,10 +193,12 @@ public class UIControl: MonoBehaviour
 
 	private IEnumerator TransitionCamera(Vector3 l_charToFloat){
 
+		float speed = ((l_charToFloat + c_cameraPositionOffset) - c_main.transform.position).normalized.magnitude;
+
 		while (c_main.transform.position != l_charToFloat + c_cameraPositionOffset) 
 		{
 			Vector3 dir = ((l_charToFloat + c_cameraPositionOffset) - c_main.transform.position).normalized;
-			c_main.transform.position += dir * 35f * Time.deltaTime;
+			c_main.transform.position += dir * (35f * Time.deltaTime) / speed;
 
 			if (Mathf.Abs (((l_charToFloat + c_cameraPositionOffset) - c_main.transform.position).magnitude) < 1)
 				c_main.transform.position = l_charToFloat + c_cameraPositionOffset;
