@@ -127,7 +127,7 @@ public class PlayerHealth : MonoBehaviour
 			playerCurrentHealth -= l_takeDamage;
 			if (playerCurrentHealth <= 0) {
 				GetComponent<PlayerAttack> ().EndTurn ();
-				c_UI.UpdateBattleDialogue ("" + gameObject.name + " died from recoil.");
+				c_UI.UpdateBattleDialogue ("" + gameObject.name + " died from recoil/bleed.");
 			}
 		} else {
 			if (playerCurrentHealth + -l_takeDamage > c_playerStats.c_playerMaxHealth) {

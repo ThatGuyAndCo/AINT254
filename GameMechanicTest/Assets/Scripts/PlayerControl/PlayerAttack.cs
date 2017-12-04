@@ -33,6 +33,7 @@ public class PlayerAttack : MonoBehaviour {
 	private bool c_playerMoved;
 
 	private Vector3 c_saveStartPosition;
+	private Quaternion c_saveStartRotation;
 	private bool c_attacked;
 
 	public ParticleSystem c_particleComponent;
@@ -75,6 +76,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_playerMove = GetComponent<PlayerMoveAStar> ();
 		c_playerMoveRangeScript = GetComponent<PlayerMoveRangeDijkstra> ();
 		c_saveStartPosition = transform.position;
+		c_saveStartRotation = transform.rotation;
 		c_squaresInMoveRange = new List<GameObject>();
 		c_squaresInAttackRange = new List<GameObject> ();
 		c_enemiesInAttackRange = new List<GameObject> ();
@@ -170,6 +172,11 @@ public class PlayerAttack : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (c_myTurn && Input.GetAxis("Mouse ScrollWheel") != 0) {
+			Camera.main.transform.LookAt (transform);
+			Camera.main.transform.RotateAround (transform.position, new Vector3(0,1,0), 25 * Input.GetAxis ("Mouse ScrollWheel"));
+		}
+
 		if (c_myTurn && c_currentlyMoving != "Called Move") 
 		{
 			if (Input.GetKeyDown (KeyCode.W) && c_currentlyMoving != "Finished Moving") 
@@ -197,8 +204,10 @@ public class PlayerAttack : MonoBehaviour {
 				{
 					c_resetMove = false;
 					transform.position = c_saveStartPosition;
+					transform.rotation = c_saveStartRotation;
 					c_currentlyMoving = "Restart Move";
 					c_UI.UpdateUIMoved (false);
+					c_UI.UpdateCamera (gameObject);
 				}
 			}
 		}
@@ -217,6 +226,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_UI.DynamicHide (true);
 		c_UI.UpdateActiveCharacter (gameObject);
 		c_saveStartPosition = transform.position;
+		c_saveStartRotation = transform.rotation;
 		c_particleComponent.Play();
 		c_playerHealthScript.CheckStatusEff ();
 		Debug.Log ("" + gameObject.name + "'s turn");
@@ -366,6 +376,11 @@ public class PlayerAttack : MonoBehaviour {
 				}
 				if (l_hoverInfo.collider.CompareTag ("MoveCube") && l_listInRange.Contains (l_hoverInfo.collider.gameObject)) {
 					l_hoverInfo.collider.GetComponent<Renderer> ().material.SetColor ("_Color", Color.green);
+				}
+
+				if (l_hoverInfo.transform.gameObject.tag == c_tagForSkillToUse && c_enemiesInAttackRange.Contains (l_hoverInfo.collider.gameObject)) {
+					transform.LookAt (l_hoverInfo.transform);
+					transform.Rotate (0.0f, 90f, 0);
 				}
 
 				if (Input.GetMouseButtonDown (0)) {

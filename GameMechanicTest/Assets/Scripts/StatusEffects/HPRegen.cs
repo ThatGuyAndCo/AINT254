@@ -31,7 +31,8 @@ public class HPRegen : ContinuedEffect, IStatusEffect {
 	public void PreApply(){
 		bool l_noRegenBuff = true;
 		bool l_noDegenDebuff = true;
-		for (int i = 0; i < c_afflicted.c_statusEff.Count; i++) {
+		int l_tempCount = c_afflicted.c_statusEff.Count;
+		for (int i = 0; i < l_tempCount; i++) {
 			if (c_afflicted.c_statusEff [i].GetType() == typeof(HPRegen)) {
 				if (c_afflicted.c_statusEff [i].GetMagnitude () < 0 && c_magnitude < 0){
 					if (c_afflicted.c_statusEff [i].GetMagnitude () > c_magnitude) {
@@ -41,7 +42,6 @@ public class HPRegen : ContinuedEffect, IStatusEffect {
 					}
 					l_noRegenBuff = false;
 				} else if (c_magnitude > 0){
-					c_afflicted.c_statusEff [i].RemoveEffect ();
 					ApplyEffect ();
 					c_afflicted.c_UI.CreateFloatingText ("HP DOWN", Color.red, c_afflicted.gameObject);
 					l_noDegenDebuff = false;

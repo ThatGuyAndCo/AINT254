@@ -6,11 +6,15 @@ using System;
 public class PlayerMoveAStar : AbstractMove {
 
 	private Transform c_myTrans;
+
+	private Camera c_mainCamera;
+
 	/// <summary>
 	/// A pointer for the game object's transform is set here to make accessing it later in the Coroutine faster.
 	/// </summary>
 	void Start(){
 		c_myTrans = transform;
+		c_mainCamera = Camera.main;
 	}
 
 	/// <summary>
@@ -130,15 +134,17 @@ public class PlayerMoveAStar : AbstractMove {
 		while (c_myTrans.position != l_pathToFollow[l_pathToFollow.Length - 1] + l_heightOffset) 
 		{
 			Debug.Log (l_pathToFollow [l_moveToNextDepth]);
+			c_myTrans.LookAt (l_pathToFollow [l_moveToNextDepth]);
+			c_myTrans.Rotate (0.0f, 90f, -5.711f);
 			while (c_myTrans.position != (l_pathToFollow [l_moveToNextDepth] + l_heightOffset)) 
 			{
 				Vector3 dir = ((l_pathToFollow [l_moveToNextDepth] + l_heightOffset) - c_myTrans.position).normalized;
 				c_myTrans.position += dir * 35f * Time.deltaTime;
+				c_mainCamera.transform.position += new Vector3(dir.x, 0, dir.z) * 35f * Time.deltaTime;
 
-				c_myTrans.LookAt (l_pathToFollow [l_moveToNextDepth]);
-
-				if (Mathf.Abs (((l_pathToFollow [l_moveToNextDepth] + l_heightOffset) - c_myTrans.position).magnitude) < 1)
+				if (Mathf.Abs (((l_pathToFollow [l_moveToNextDepth] + l_heightOffset) - c_myTrans.position).magnitude) < 1) {
 					c_myTrans.position = l_pathToFollow [l_moveToNextDepth] + l_heightOffset;
+				}
 
 				yield return null;
 			}
