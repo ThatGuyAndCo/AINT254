@@ -77,7 +77,7 @@ public class HPRegen : ContinuedEffect, IStatusEffect {
 		return c_magnitude;
 	}
 
-	public override void ContEffect ()
+	public void ContEffect ()
 	{
 		c_afflicted.TakeDamage (c_magnitude);
 	}

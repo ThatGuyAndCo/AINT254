@@ -378,7 +378,7 @@ public class PlayerAttack : MonoBehaviour {
 					l_hoverInfo.collider.GetComponent<Renderer> ().material.SetColor ("_Color", Color.green);
 				}
 
-				if (l_hoverInfo.transform.gameObject.tag == c_tagForSkillToUse && c_enemiesInAttackRange.Contains (l_hoverInfo.collider.gameObject)) {
+				if (l_hoverInfo.transform.gameObject.tag == c_tagForSkillToUse && c_enemiesInAttackRange.Contains (l_hoverInfo.collider.gameObject) && l_hoverInfo.transform != gameObject.transform) {
 					transform.LookAt (l_hoverInfo.transform);
 					transform.Rotate (0.0f, 90f, 0);
 				}
