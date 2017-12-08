@@ -14,14 +14,16 @@ public abstract class AbstractMove : MonoBehaviour {
 	/// <param name="l_currentNode">The node to find adjecant nodes to</param>
 	protected List<Node> FindNeighbours(List<Node> l_openList, List<Node> l_closedList, Node l_currentNode){
 		int[] l_startGrid = GridTest.GetArrayPosFromVector (l_currentNode.c_nodePosition);
-		//Debug.Log (l_startGrid[0] + ", " + l_startGrid[1] + " is grid pos, current node transform = " + l_currentNode.c_nodePosition);
 		List<Node> l_returnNodes = new List<Node>();
 
+		if (l_startGrid [0] == -100 || l_startGrid [1] == -100)
+			return l_returnNodes;
+		
 		Node l_tempNode = new Node (new Vector3 (0, 0, 0));
 
 		try{
 			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] + 1, l_startGrid [1]];
-			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode)) {
+			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode) && l_tempNode != null) {
 				l_returnNodes.Add (l_tempNode);
 			}
 		}
@@ -29,7 +31,7 @@ public abstract class AbstractMove : MonoBehaviour {
 		}
 		try{
 			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0] - 1, l_startGrid [1]];
-			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode)) {
+			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode) && l_tempNode != null) {
 				l_returnNodes.Add (l_tempNode);
 			}
 		}
@@ -37,7 +39,7 @@ public abstract class AbstractMove : MonoBehaviour {
 		}
 		try{
 			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] + 1];
-			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode)) {
+			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode) && l_tempNode != null) {
 				l_returnNodes.Add (l_tempNode);
 			}
 		}
@@ -45,7 +47,7 @@ public abstract class AbstractMove : MonoBehaviour {
 		}
 		try{
 			l_tempNode = GridTest.s_gridPosArray [l_startGrid [0], l_startGrid [1] - 1];
-			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode)) {
+			if (!ListContains(l_openList, l_tempNode) && !ListContains(l_closedList, l_tempNode) && l_tempNode != null) {
 				l_returnNodes.Add (l_tempNode);
 			}
 		}

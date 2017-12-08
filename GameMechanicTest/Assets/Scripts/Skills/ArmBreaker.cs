@@ -29,4 +29,20 @@ public class ArmBreaker : AbstractSkill{
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "Strike the opponent hard to lower their attack.";
+	}
+
+	public override string getSkillName (){
+		return "Arm-Breaker";
+	}
 }

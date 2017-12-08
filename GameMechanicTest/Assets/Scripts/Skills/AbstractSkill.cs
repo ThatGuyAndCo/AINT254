@@ -43,4 +43,12 @@ public abstract class AbstractSkill{
 	}
 
 	public abstract int getPlayerSkillRange ();
+
+	public abstract int getPlayerAOERange ();
+
+	public abstract int getSkillPower ();
+
+	public abstract string getSkillDescription ();
+
+	public abstract string getSkillName ();
 }

@@ -228,6 +228,8 @@ GameObject:
   - component: {fileID: 223593232389393866}
   - component: {fileID: 114251446709320314}
   - component: {fileID: 114831265559001808}
+  - component: {fileID: 54559895259939210}
+  - component: {fileID: 114804378570553334}
   m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
@@ -581,6 +583,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1112513272591884}
   m_Mesh: {fileID: 4300002, guid: 49acf0d5bf0392b43a31551aa1eaaa4e, type: 3}
+--- !u!54 &54559895259939210
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1974546358171550}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!54 &54808333812266502
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -749,6 +766,17 @@ MonoBehaviour:
   c_teamDamageTag: EnemyTeam
   c_enemyDamageTag: PlayerTeam
   c_myClass: Warrior
+--- !u!114 &114804378570553334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1974546358171550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78017b43957936b42bebc0a99c238c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114806159127145982
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -23,4 +23,20 @@ public class FlareSkill : AbstractSkill {
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "A blast of fire that damages all enemies in range.";
+	}
+
+	public override string getSkillName (){
+		return "Flare";
+	}
 }

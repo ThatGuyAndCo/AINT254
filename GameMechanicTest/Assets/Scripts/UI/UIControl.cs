@@ -14,7 +14,7 @@ public class UIControl: MonoBehaviour
 
 	private PlayerAttack c_playerAttackScript;
 
-	[SerializeField]
+	[SerializeField] 
 	private GameObject c_displayContainer;
 
 	[SerializeField]
@@ -45,6 +45,12 @@ public class UIControl: MonoBehaviour
 	private Image c_battleLog;
 
 	private FloatingDamageTest c_floatingTextTest;
+
+	[SerializeField]
+	private GameObject c_skillDescCont;
+
+	[SerializeField]
+	private Text[] c_skillTextComps;
 
 	void Start(){
 		c_battleDialogue.text = "";
@@ -127,6 +133,60 @@ public class UIControl: MonoBehaviour
 			Debug.Log ("Thief set skill 2 to War Cry");
 			break;
 		}			
+	}
+
+	public void PointerEnterSkillButton(int l_skillButtonNumber){
+		c_skillDescCont.SetActive(true);
+
+		string l_skillToDisplay = "";
+		if (l_skillButtonNumber == 1)
+			l_skillToDisplay = c_skillButtons [0].GetComponentInChildren<Text> ().text;
+		else
+			l_skillToDisplay = c_skillButtons [1].GetComponentInChildren<Text> ().text;
+
+		AbstractSkill l_temp = new BasicAttack();
+
+		switch(l_skillToDisplay){
+		case "Warmth":
+			l_temp = new Warmth ();
+			break;
+		case "Flare":
+			l_temp = new FlareSkill ();
+			break;
+		case "Soothing River":
+			l_temp = new SoothingRiver ();
+			break;
+		case "Tidal Surge":
+			l_temp = new TidalSurge ();
+			break;
+		case "Arm-Breaker":
+			l_temp = new ArmBreaker ();
+			break;
+		case "War Cry":
+			l_temp = new WarCry ();
+			break;
+		case "Pounce":
+			l_temp = new Pounce ();
+			break;
+		case "Swift Strike":
+			l_temp = new SwiftStrike ();
+			break;
+		case "Stalwart":
+			l_temp = new Stalwart ();
+			break;
+		case "Crunch":
+			l_temp = new Crunch ();
+			break;
+		}
+		c_skillTextComps [0].text = l_temp.getSkillName ();
+		c_skillTextComps [1].text = "Power: " + l_temp.getSkillPower ();
+		c_skillTextComps [2].text = "Range: " + l_temp.getPlayerSkillRange ();
+		c_skillTextComps [3].text = "AOE: " + l_temp.getPlayerAOERange ();
+		c_skillTextComps [4].text = l_temp.getSkillDescription ();
+	}
+
+	public void PointerExitSkillButton(){
+		c_skillDescCont.SetActive(false);
 	}
 
 	private void ActivateSkill(string l_skillName){

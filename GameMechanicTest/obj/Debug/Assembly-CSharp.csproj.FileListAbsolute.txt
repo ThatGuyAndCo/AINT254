@@ -62,3 +62,4 @@ D:\Study\AINT254\GameMechanicTest\Temp\bin\Debug\UnityEngine.HoloLens.xml
 D:\Study\AINT254\GameMechanicTest\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 D:\Study\AINT254\GameMechanicTest\obj\Debug\Assembly-CSharp.dll
 D:\Study\AINT254\GameMechanicTest\obj\Debug\Assembly-CSharp.pdb
+C:\Users\jamorgan\Documents\AINT254\GameMechanicTest\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache

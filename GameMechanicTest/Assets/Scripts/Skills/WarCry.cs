@@ -38,4 +38,20 @@ public class WarCry : AbstractSkill {
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "Buff all team-mates in range, whilst de-buffing enemies and healing a small amount of health to the player, at the cost of greatly reduced defence.";
+	}
+
+	public override string getSkillName (){
+		return "War Cry";
+	}
 }

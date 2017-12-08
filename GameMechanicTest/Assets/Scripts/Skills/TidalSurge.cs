@@ -24,4 +24,20 @@ public class TidalSurge : AbstractSkill {
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "Surge of water deals light damage to all enemies in a large range of the player.";
+	}
+
+	public override string getSkillName (){
+		return "Tidal Surge";
+	}
 }

@@ -47,24 +47,22 @@ public class GridTest : MonoBehaviour {
 	public static int[] GetArrayPosFromVector(Vector3 l_myPos)
 	{
 		int[] l_returnArrayPos = new int[2];
-
 		for (int x = 0; x < s_gridPosArray.GetLength (0); x++) 
 		{
-			if (s_gridPosArray [x, 0].c_nodePosition.x == l_myPos.x) 
+			if (s_gridPosArray [x, 0] != null && s_gridPosArray [x, 0].c_nodePosition.x == l_myPos.x) 
 			{
 				l_returnArrayPos [0] = x;
-                                                       
 
 				for (int z = 0; z < s_gridPosArray.GetLength (1); z++) 
 				{
-					if (s_gridPosArray [x, z].c_nodePosition.z == l_myPos.z) {
+					if (s_gridPosArray [x, z] != null && s_gridPosArray [x, z].c_nodePosition.z == l_myPos.z) {
 						l_returnArrayPos [1] = z;
 						return l_returnArrayPos;
 					}
 				}
 			}
 		}
-
+		Debug.Log ("Returning 'dead value' - GetArrayPosFromVector @ Pos: " + l_myPos);
 		return new int[]{ -100, -100 };
 	}
 
@@ -119,6 +117,37 @@ public class GridTest : MonoBehaviour {
 		return l_returnList;
 	}
 
+	public static bool IsSpawningObstruction(Vector3 l_spawnPoint, int l_layerToCompare){ // 1<<11 for environment
+		RaycastHit l_hitInfo;
+
+		Physics.Raycast (l_spawnPoint, -Vector3.up, out l_hitInfo, 50f, l_layerToCompare);
+		Debug.DrawRay (l_spawnPoint, -Vector3.up * 50f, Color.black, 10f);
+		if(l_hitInfo.collider != null)
+			return true;
+
+		Physics.Raycast (l_spawnPoint + new Vector3(4, 0, 4), -Vector3.up, out l_hitInfo, 50f, l_layerToCompare);
+		Debug.DrawRay (l_spawnPoint + new Vector3(4, 0, 4), -Vector3.up * 50f, Color.black, 10f);
+		if(l_hitInfo.collider != null)
+			return true;
+
+		Physics.Raycast (l_spawnPoint + new Vector3(-4, 0, 4), -Vector3.up, out l_hitInfo, 50f, l_layerToCompare);
+		Debug.DrawRay (l_spawnPoint + new Vector3(-4, 0, 4), -Vector3.up * 50f, Color.black, 10f);
+		if(l_hitInfo.collider != null)
+			return true;
+
+		Physics.Raycast (l_spawnPoint + new Vector3(-4, 0, -4), -Vector3.up, out l_hitInfo, 50f, l_layerToCompare);
+		Debug.DrawRay (l_spawnPoint + new Vector3(-4, 0, -4), -Vector3.up * 50f, Color.black, 10f);
+		if(l_hitInfo.collider != null)
+			return true;
+
+		Physics.Raycast (l_spawnPoint + new Vector3(4, 0, -4), -Vector3.up, out l_hitInfo, 50f, l_layerToCompare);
+		Debug.DrawRay (l_spawnPoint + new Vector3(4, 0, -4), -Vector3.up * 50f, Color.black, 10f);
+		if(l_hitInfo.collider != null)
+			return true;
+
+		return false;
+	}
+
 	/// <summary>
 	/// Initialises the 2D grid array of nodes, the length and width of the column and rows, to be used by pathfinding.
 	/// </summary>
@@ -135,8 +164,12 @@ public class GridTest : MonoBehaviour {
 				int l_testZ = (z - 5) / 10;
 				l_testZ = c_rows - 1 - l_testZ;
 
-				s_gridPosArray [l_testX, l_testZ] = new Node(new Vector3 (x , -1f, z));
-				c_gridPositions.Add (new Vector3 (x, -1f, z));
+				if (!IsSpawningObstruction(new Vector3(x, 50, z), 1<<11)) {
+					Debug.Log ("Adding tile @ pos: " + new Vector3 (x, -1f, z) + " at grid pos: " + l_testX + " " + l_testZ);
+					s_gridPosArray [l_testX, l_testZ] = new Node (new Vector3 (x, -1f, z));
+					Debug.Log (s_gridPosArray [l_testX, l_testZ]);
+					c_gridPositions.Add (new Vector3 (x, -1f, z));
+				}
 			}
 		}
 	}
@@ -150,15 +183,16 @@ public class GridTest : MonoBehaviour {
 
 		for (int x = 5; x < (c_columns * 10) + 5; x += 10) {
 			for (int z = 5; z < (c_rows * 10) + 5; z += 10) {
-				if (x == 5 || z == 5 || x == (c_columns * 10) - 5 || z == (c_rows * 10) - 5) {
-					l_toInstantiate = c_wall;
-					c_gridPositions.Remove(new Vector3 (x, -1f, z));
-				}
-				else
-					l_toInstantiate = c_floor;
+				if (!IsSpawningObstruction(new Vector3(x, 50, z), 1<<11)) {
+					if (x == 5 || z == 5 || x == (c_columns * 10) - 5 || z == (c_rows * 10) - 5) {
+						l_toInstantiate = c_wall;
+						c_gridPositions.Remove (new Vector3 (x, -1f, z));
+					} else
+						l_toInstantiate = c_floor;
 				
-				GameObject l_instance = Instantiate (l_toInstantiate, new Vector3 (x, -1f, z), Quaternion.identity) as GameObject;
-				l_instance.transform.SetParent (c_myBoard);
+					GameObject l_instance = Instantiate (l_toInstantiate, new Vector3 (x, -1f, z), Quaternion.identity) as GameObject;
+					l_instance.transform.SetParent (c_myBoard);
+				}
 			}
 		}
 	}

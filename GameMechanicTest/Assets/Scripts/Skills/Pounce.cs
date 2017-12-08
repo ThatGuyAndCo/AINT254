@@ -34,4 +34,20 @@ public class Pounce : AbstractSkill {
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "Close range strike with a high critical hit chance.";
+	}
+
+	public override string getSkillName (){
+		return "Pounce";
+	}
 }

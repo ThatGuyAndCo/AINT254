@@ -56,7 +56,9 @@ public class PlayerAttack : MonoBehaviour {
 
 	private bool c_resetMove;
 
-	private int saveAttackRange;
+	private int c_saveAttackRange;
+
+	private int c_AOERange = 0;
 
 
 	// Use this for initialization
@@ -83,7 +85,7 @@ public class PlayerAttack : MonoBehaviour {
 		c_attacked = false;
 		c_setupAttack = false;
 		c_resetMove = false;
-		saveAttackRange = c_playerHealthScript.c_playerStats.playerAttackRange;
+		c_saveAttackRange = c_playerHealthScript.c_playerStats.playerAttackRange;
 		SetSkill("BasicAttack");
 		if(!c_myTurn)
 			c_particleComponent.Stop();
@@ -93,81 +95,64 @@ public class PlayerAttack : MonoBehaviour {
 		switch(l_skillName){
 		case "BasicAttack":
 			c_currentSkill = new BasicAttack ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = saveAttackRange;
+			c_playerHealthScript.c_playerStats.playerAttackRange = c_saveAttackRange;
+			c_AOERange = 0;
 			c_tagForSkillToUse = c_enemyDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
-			break;
+			return;
 		case "Warmth":
 			c_currentSkill = new Warmth ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_teamDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "Flare":
 			c_currentSkill = new FlareSkill ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_enemyDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "SoothingRiver":
 			c_currentSkill = new SoothingRiver ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_teamDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "TidalSurge":
 			c_currentSkill = new TidalSurge ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_teamDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "ArmBreaker":
 			c_currentSkill = new ArmBreaker ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_enemyDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "WarCry":
 			c_currentSkill = new WarCry ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_teamDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "Pounce":
 			c_currentSkill = new Pounce ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange ();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_enemyDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "SwiftStrike":
 			c_currentSkill = new SwiftStrike ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_enemyDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "Stalwart":
 			c_currentSkill = new Stalwart ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_teamDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		case "Crunch":
 			c_currentSkill = new Crunch ();
-			c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
-			Debug.Log ("Player range = " + c_playerHealthScript.c_playerStats.playerAttackRange + ", skill range = " + c_currentSkill.getPlayerSkillRange ());
 			c_tagForSkillToUse = c_enemyDamageTag;
 			Debug.Log ("Setting skill to " + l_skillName);
 			break;
 		}
+		c_playerHealthScript.c_playerStats.playerAttackRange = c_currentSkill.getPlayerSkillRange();
+		c_AOERange = c_currentSkill.getPlayerAOERange ();
 	}
 	
 	// Update is called once per frame
@@ -367,7 +352,10 @@ public class PlayerAttack : MonoBehaviour {
 			}
 			yield return null;
 		}
+		List<GameObject> l_targetList = new List<GameObject>();
 		while (c_setupAttack) {
+			if (l_targetList.Count != 0)
+				ClearTileColourInGrid (l_targetList);
 			RaycastHit l_hoverInfo = new RaycastHit ();
 			if (Physics.Raycast (Camera.main.ScreenPointToRay (Input.mousePosition), out l_hoverInfo)) {
 				//Debug.Log (l_hoverInfo.collider.gameObject.name);
@@ -375,6 +363,12 @@ public class PlayerAttack : MonoBehaviour {
 					tile.GetComponent<Renderer> ().material.SetColor ("_Color", Color.yellow);
 				}
 				if (l_hoverInfo.collider.CompareTag ("MoveCube") && l_listInRange.Contains (l_hoverInfo.collider.gameObject)) {
+					if (c_AOERange > 0) {
+						l_targetList = GridTest.CheckRange (l_hoverInfo.collider.transform.position, c_AOERange, "MoveCube");
+						for (int tar = 0; tar < l_targetList.Count; tar++) {
+							l_targetList[tar].GetComponent<Renderer> ().material.SetColor ("_Color", Color.magenta);
+						}
+					}
 					l_hoverInfo.collider.GetComponent<Renderer> ().material.SetColor ("_Color", Color.green);
 				}
 
@@ -406,6 +400,7 @@ public class PlayerAttack : MonoBehaviour {
 			yield return null;
 		}
 
+		ClearTileColourInGrid (l_targetList);
 		Debug.Log ("Setup attack = " + c_setupAttack);
 		Debug.Log ("Finishing SearchForTile");
 		StopCoroutine ("SearchForTile");

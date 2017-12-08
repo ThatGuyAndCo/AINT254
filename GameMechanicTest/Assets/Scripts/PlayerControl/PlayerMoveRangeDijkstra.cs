@@ -42,6 +42,9 @@ public class PlayerMoveRangeDijkstra : AbstractMove {
 
 			List<Node> l_neighbourNodes = FindNeighbours (l_openList, l_closedList, l_nextNode);
 
+			if (l_neighbourNodes.Count == 0)
+				continue;
+
 			for (int n = 0; n < l_neighbourNodes.Count; n++) {
 				if (IsThereObstruction (l_neighbourNodes[n].c_nodePosition) || ListContains(l_closedList, l_neighbourNodes[n])) {
 					continue;

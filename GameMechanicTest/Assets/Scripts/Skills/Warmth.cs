@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Warmth : AbstractSkill {
 
-	protected int c_baseDamage = -10;
+	protected int c_baseDamage = -25;
 	public int c_skillRange = 6;
 	protected int c_AOERange = 0;
 	protected float c_turnDelayModifier = 1.2f;
@@ -24,5 +24,20 @@ public class Warmth : AbstractSkill {
 
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
+	}
+
+	public override int getSkillPower (){
+		return -c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "A warm light gently heals the team-mate for a percentage of thier health per turn, for 5 turns (non-stackable).";
+	}
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override string getSkillName (){
+		return "Warmth";
 	}
 }

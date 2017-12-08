@@ -142,7 +142,7 @@ public class PlayerMoveAStar : AbstractMove {
 				c_myTrans.position += dir * 35f * Time.deltaTime;
 				c_mainCamera.transform.position += new Vector3(dir.x, 0, dir.z) * 35f * Time.deltaTime;
 
-				if (Mathf.Abs (((l_pathToFollow [l_moveToNextDepth] + l_heightOffset) - c_myTrans.position).magnitude) < 1) {
+				if (Mathf.Abs (((l_pathToFollow [l_moveToNextDepth] + l_heightOffset) - c_myTrans.position).magnitude) < 0.35f) {
 					c_myTrans.position = l_pathToFollow [l_moveToNextDepth] + l_heightOffset;
 				}
 

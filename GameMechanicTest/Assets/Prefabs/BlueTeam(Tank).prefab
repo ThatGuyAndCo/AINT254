@@ -104,6 +104,8 @@ GameObject:
   - component: {fileID: 223018297660198272}
   - component: {fileID: 114541423116673920}
   - component: {fileID: 114520818558313568}
+  - component: {fileID: 54292001747223304}
+  - component: {fileID: 114157859339446340}
   m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
@@ -596,6 +598,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!54 &54292001747223304
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1597137833712068}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!95 &95107996687228660
 Animator:
   serializedVersion: 3
@@ -691,6 +708,17 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114157859339446340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1597137833712068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78017b43957936b42bebc0a99c238c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114316532116513038
 MonoBehaviour:
   m_ObjectHideFlags: 1

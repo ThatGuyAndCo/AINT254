@@ -40,4 +40,20 @@ public class SwiftStrike : AbstractSkill {
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "A long-ranged strike that bleeds the enemy for 10% of their heath per turn, for 3 turns (stackable).";
+	}
+
+	public override string getSkillName (){
+		return "Swift Strike";
+	}
 }

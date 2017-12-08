@@ -21,4 +21,20 @@ public class SoothingRiver : AbstractSkill {
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return -c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "Restores health to all targets in range of the player.";
+	}
+
+	public override string getSkillName (){
+		return "Soothing River";
+	}
 }

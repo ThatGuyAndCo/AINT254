@@ -39,6 +39,8 @@ GameObject:
   - component: {fileID: 223165291262295246}
   - component: {fileID: 114760461152036546}
   - component: {fileID: 114410209044845050}
+  - component: {fileID: 54155389858303084}
+  - component: {fileID: 114189329555682018}
   m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
@@ -596,6 +598,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!54 &54155389858303084
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1259579097012778}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!95 &95396345217496848
 Animator:
   serializedVersion: 3
@@ -640,6 +657,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114189329555682018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1259579097012778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78017b43957936b42bebc0a99c238c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114212037434175294
 MonoBehaviour:
   m_ObjectHideFlags: 1

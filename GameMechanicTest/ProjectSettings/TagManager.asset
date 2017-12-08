@@ -9,6 +9,7 @@ TagManager:
   - FloatingCanvas
   - UICanvas
   - MoveCube
+  - Environment
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - PlayerTeam
   - EnemyTeam
   - MoveLayer
-  - 
+  - Environment
   - 
   - 
   - 

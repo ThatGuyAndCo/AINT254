@@ -30,4 +30,20 @@ public class Stalwart : AbstractSkill {
 	public override int getPlayerSkillRange(){
 		return c_skillRange;
 	}
+
+	public override int getPlayerAOERange(){
+		return c_AOERange;
+	}
+
+	public override int getSkillPower (){
+		return c_baseDamage;
+	}
+
+	public override string getSkillDescription (){
+		return "Shields the team-mates in range, raising their defence.";
+	}
+
+	public override string getSkillName (){
+		return "Stalwart";
+	}
 }
